@@ -17,8 +17,15 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+//Thêm rounter cho admin
+app.MapAreaControllerRoute(
+  name: "Admin",
+  areaName: "Admin",
+  pattern: "Admin/{controller=AdminHome}/{action=Index}/{id?}"
+);
 
 app.MapControllerRoute(
 	name: "default",
