@@ -1,0 +1,237 @@
+
+
+/*** 
+=============================================
+    Faq Style1 Area Css
+=============================================
+***/
+.faq-style1-area {
+    position: relative;
+    display: block;
+    background: #ffffff;
+    padding: 110px 0 110px;
+}
+.faq-style1-content {
+    position: relative;
+    display: block;
+}
+
+
+.faq-style1_tab{
+    position: relative;
+    display: block;
+}
+.faq-style1_tab .tab-buttons {
+    position: relative;
+    display: block;
+    z-index: 2;
+}
+.faq-style1_tab .tab-buttons li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    float: left;
+    background: #ffffff;
+    box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.15);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 27px 0px 27px;
+    width: 285px;
+    color: #98a1a7;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    font-family: var(--thm-font-2);
+    transition: all 200ms linear;
+    transition-delay: 0.1s;
+    justify-content: center;
+}
+.faq-style1_tab .tab-buttons .tab-btn:hover,
+.faq-style1_tab .tab-buttons .tab-btn.active-btn{
+    color: #fff;
+    background: var(--thm-primary);
+}
+
+.faq-style1_tab .tabs-content {
+    position: relative;
+    display: block;
+    padding-right: 60px;
+    z-index: 1;
+}
+.faq-style1_tab .tabs-content .pattern-bg {
+    position: absolute;
+    top: -60px;
+    right: 0;
+    bottom: 60px;
+    max-width: 660px;
+    width: 100%;
+    z-index: -1;
+}
+.faq-style1_tab .tabs-content .tab{
+    position: relative;
+	display: none;
+	-webkit-transform: translateY(5px);
+	-ms-transform: translateY(5px);
+	transform: translateY(5px);
+	-webkit-transition:all 600ms ease;
+	-moz-transition:all 600ms ease;
+	-ms-transition:all 600ms ease;
+	-o-transition:all 600ms ease;
+	transition:all 600ms ease;
+	z-index:10;
+}
+.faq-style1_tab .tabs-content .tab.active-tab{
+    display: block;
+	margin-top: 0px;
+	-webkit-transform: translateY(0px);
+	-ms-transform: translateY(0px);
+	transform: translateY(0px);
+}
+  
+.accordion-box{
+     position: relative;
+     display: block;
+     background: #eaf0f4;
+     padding: 60px 60px 60px;
+}
+.accordion-box .block{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: all 500ms ease;
+}
+.accordion-box .block:last-child{
+    margin-bottom: 0px;
+}
+.accordion-box .block .acc-content.current{
+    display:block;  
+}
+.accordion-box .block .acc-btn {
+    position: relative;
+    display: block;
+    background: #fff;
+    border-radius: 35px;
+    padding: 21px 80px 21px 40px;
+    cursor: pointer;
+    transition: all 500ms ease;
+}
+.accordion-box .block .acc-btn.active{
+    background: var(--thm-base);
+}
+
+.accordion-box .block .acc-btn h3{
+    color: #151515;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+    transition: all 500ms ease;
+}
+.accordion-box .block .acc-btn.active h3{
+    color: var(--thm-primary);
+}
+  
+.accordion-box .block .acc-btn .icon-outer{
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    width: 40px;
+    height: 40px;
+    background: #ecf2f6;
+    border-radius: 50%;
+    color: #98a1a7;
+    font-size: 14px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    transform: translateY(-50%) rotate(-45deg);
+    transition: all 500ms ease;
+    z-index: 1;
+}
+.accordion-box .block .acc-btn.active .icon-outer{
+    color: #ffffff;
+    background: var(--thm-primary);
+    transform: translateY(-50%) rotate(90deg);
+}
+.accordion-box .block .acc-btn .icon-outer:before{
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    bottom: -5px;
+    right: -5px;
+    border: 1px solid var(--thm-primary);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: all 900ms ease;
+}
+.accordion-box .block .acc-btn.active .icon-outer:before{
+    transform: scale(1.0);    
+}
+.accordion-box .block .acc-content{
+    position: relative;
+    display: none;
+    padding-top: 32px;
+    padding-left: 40px;
+    padding-right: 80px;
+}
+  
+
+
+/*** 
+=============================================
+    Faq Form Area Css
+=============================================
+***/
+.faq-form-area{
+    position: relative;
+    display: block;
+    background: #ecf2f6;
+    padding: 110px 0 110px;
+    z-index: 1;
+}
+.faq-form-area-bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: cover;
+    z-index: -1;
+}
+
+.faq-left-box{
+    position: relative;
+    display: block;
+}
+.faq-left-box .thm-round-box1{
+    position: absolute;
+    top: 120px;
+    left: auto;
+    bottom: auto;
+    right: 100px;  
+} 
+
+
+.contact-form-box1.faq-form-box {
+    padding: 55px 60px 60px;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+}
+.contact-form-box1.faq-form-box form .button-box {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+

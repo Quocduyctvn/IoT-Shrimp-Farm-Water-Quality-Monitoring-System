@@ -1,0 +1,733 @@
+
+
+
+/*** 
+=============================================
+    Blog Style1 Area Css
+=============================================
+***/
+.blog-style1-area {
+    position: relative;
+    display: block;
+    background: #ffffff;
+    padding: 110px 0 70px;
+    z-index: 1;
+}
+.blog-style1_top {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    padding-bottom: 60px;
+}
+.blog-style1_top .sec-title{
+    padding-bottom: 0;
+}
+.blog-style1_top .btns-box{
+    position: relative;
+    display: block;
+    line-height: 0;
+}
+
+.single-blog-style1{
+    position: relative;
+    display: block;
+    margin-bottom: 30px;
+    border: 1px solid #dae5ec;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    padding: 19px;
+}
+.single-blog-style1 .img-holder{
+    position: relative;
+    display: block;
+}
+.single-blog-style1 .img-holder .categories {
+    position: absolute;
+    top: 20px;
+    left: -20px;
+    background: var(--thm-primary);
+    padding: 5px 10px 1px;
+    padding-right: 15px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    z-index: 1;
+}
+.single-blog-style1 .img-holder .categories h6{
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 26px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.single-blog-style1 .img-holder .categories h6 i::before{
+    position: relative;
+    display: inline-block;
+    font-size: 15px;
+    padding-right: 10px;
+}
+.single-blog-style1 .img-holder .inner {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.single-blog-style1 .img-holder img{
+    width: 100%;
+}
+.single-blog-style1:hover .img-holder img {
+    transform: scale(1.2) rotate(1deg);
+}
+
+.single-blog-style1 .text-holder {
+    position: relative;
+    display: block;
+    padding: 24px 10px 18px;
+}
+.single-blog-style1 .text-holder .blog-title {
+    font-size: 24px;
+    line-height: 34px;
+    font-weight: 600;
+    text-transform: none;
+    margin-bottom: 15px;
+}
+.single-blog-style1 .text-holder .blog-title a{
+    color: var(--thm-black);
+    transition: all 200ms linear;
+    transition-delay: 0.1s;
+}
+.single-blog-style1 .text-holder .blog-title a:hover{
+    color: var(--thm-base);
+}
+
+.single-blog-style1 .text-holder .meta-box{
+    position: relative;
+    display: block;
+    border-top: 1px solid #dae5ec;
+    padding-top: 21px;    
+}
+.single-blog-style1 .text-holder .meta-box .meta-info{
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+.single-blog-style1 .text-holder .meta-box .meta-info li {
+    position: relative;
+    display: block;
+    float: left;
+    color: #98a1a7;
+    font-size: 15px;
+    line-height: 25px;
+    font-weight: 500;
+    padding-right: 16px;
+    margin-right: 15px;
+    font-family: var(--thm-font-2);
+}
+.single-blog-style1 .text-holder .meta-box .meta-info li::before {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    bottom: 7px;
+    background: #d1d9dd;
+    width: 1px;
+    content: "";
+}
+.single-blog-style1 .text-holder .meta-box .meta-info li:last-child:before{
+    display: none;
+}
+.single-blog-style1 .text-holder .meta-box .meta-info li:last-child{
+    margin-right: 0;
+    padding-right: 0;
+}
+.single-blog-style1 .text-holder .meta-box .meta-info li i {
+    position: relative;
+    display: inline-block;
+    padding-right: 5px;
+    color: #98a1a7;
+}
+.single-blog-style1 .text-holder .meta-box .meta-info li a {
+    color: #98a1a7;
+    transition: all 200ms linear;
+    transition-delay: 0.1s;
+}
+.single-blog-style1 .text-holder .meta-box .meta-info li a:hover{
+    color: var(--thm-base);    
+}
+
+
+.single-blog-style1 .text-holder .text {
+    position: relative;
+    display: block;
+    padding-top: 17px;
+    padding-bottom: 20px;
+}
+.single-blog-style1 .text-holder .text p {
+    margin: 0;
+}
+.single-blog-style1 .text-holder .btns-box{
+    position: relative;
+    display: block;
+    line-height: 0;
+}
+.single-blog-style1 .text-holder .btns-box a:hover{
+    color: var(--thm-primary);
+}
+
+
+
+/*** 
+=============================================
+    Blog Style2 Area Css
+=============================================
+***/
+.blog-style2-area {
+    position: relative;
+    display: block;
+    background: #ffffff;
+    padding: 110px 0 80px;
+    z-index: 1;
+}
+
+.single-blog-style2{}
+.single-blog-style2 .text-holder {
+    padding: 24px 10px 3px;
+}
+.single-blog-style2 .text-holder .meta-box {
+    border-top: 0px solid #dae5ec;
+    padding-top: 0;
+    padding-bottom: 10px;
+}
+.single-blog-style2 .text-holder .blog-title {
+    margin-bottom: 20px;
+}
+.single-blog-style2 .text-holder .btns-box {
+    border-top: 1px solid #dae5ec;
+    padding-top: 19px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.single-blog-style2 .text-holder .btns-box .left{
+    position: relative;
+    display: block;
+}
+.single-blog-style2 .text-holder .btns-box .right{
+    position: relative;
+    display: block;    
+}
+.single-blog-style2 .text-holder .btns-box .right a{
+    color: #98a1a7;
+    font-size: 14px;
+    font-family: var(--thm-font-2);
+    transition: all 200ms linear;
+    transition-delay: 0.1s;
+}
+.single-blog-style2 .text-holder .btns-box .right a i{
+    position: relative;
+    display: inline-block;
+    padding-right: 5px;
+}
+.single-blog-style2 .text-holder .btns-box .right a:hover{
+    color: var(--thm-black);
+}
+
+
+
+/*** 
+=============================================
+    Blog Page One Css
+=============================================
+***/
+.blog-page-one {
+    position: relative;
+    display: block;
+    background: #ffffff;
+    padding: 110px 0 110px;
+    z-index: 1;
+}
+
+
+
+/*** 
+=============================================
+    Blog Page Two Css
+=============================================
+***/
+.blog-page-two {
+    position: relative;
+    display: block;
+    background: #ffffff;
+    padding: 110px 0 110px;
+    z-index: 1;
+}
+
+
+
+/*** 
+=============================================
+    Blog Page Three Css
+=============================================
+***/
+.blog-page-three {
+    position: relative;
+    display: block;
+    background: #ffffff;
+    padding: 110px 0 110px;
+    z-index: 1;
+}
+.single-blog-style3{
+    margin-bottom: 50px;
+}
+.single-blog-style3 .text-holder {
+    padding: 35px 10px 18px;
+}
+.single-blog-style3 .text-holder .blog-title {
+    font-size: 30px;
+    line-height: 40px;
+    margin-bottom: 19px;
+}
+
+
+
+/*** 
+=============================================
+    Blog Page Four Css
+=============================================
+***/
+.blog-page-four {
+    position: relative;
+    display: block;
+    background: #ffffff;
+    padding: 110px 0 110px;
+    z-index: 1;
+}
+.single-blog-style4{
+    margin-bottom: 30px;
+}
+.single-blog-style4 .inner-box{
+    position: relative;
+    display: block;
+    padding-left: 340px;
+    min-height: 270px;
+}
+.single-blog-style4 .img-holder{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 340px;
+    height: 270px;
+}
+.single-blog-style4 .text-holder {
+    position: relative;
+    display: block;
+    padding-top: 15px;
+    padding-left: 40px;
+    padding-bottom: 16px;
+    padding-right: 20px;
+}
+
+
+
+/*** 
+=============================================
+    Blog Details Area Css
+=============================================
+***/
+.blog-details-area{
+    position: relative;
+    display: block;
+    background: #ffffff;
+    padding: 110px 0 110px;
+    z-index: 1;
+}
+.blog-details-content{
+    position: relative;
+    display: block;
+}
+.blog-details-content .single-blog-style3 {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+}
+.blog-details-content .single-blog-style3 .text-holder {
+    padding: 0px 0px 0px;
+}
+.blog-details-content .single-blog-style3 .categories {
+    position: relative;
+    display: inline-block;
+    background: var(--thm-primary);
+    padding: 6px 10px 3px;
+    padding-right: 15px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    z-index: 1;
+}
+.blog-details-content .single-blog-style3 .categories h6{
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 26px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.blog-details-content .single-blog-style3 .categories h6 i::before{
+    position: relative;
+    display: inline-block;
+    font-size: 15px;
+    padding-right: 10px;
+}
+.blog-details-content .single-blog-style3 .text-holder .blog-title {
+    margin-top: 25px;
+    margin-bottom: 19px;
+}
+
+
+.blog-details-content .single-blog-style3 .img-holder {
+    position: relative;
+    display: block;
+    margin-bottom: 0px;
+    border: 1px solid #dae5ec;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0px 0px 30px 0px rgb(0 0 0 / 10%);
+    padding: 19px;
+    margin-top: 24px;
+}
+.blog-details-content .single-blog-style3 .img-holder img{
+    transform: none;
+}
+
+.blog-details-text-1{
+    position: relative;
+    display: block;
+    padding-top: 47px;
+}
+.blog-details-text-1 h3{
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 600;
+    margin: 0 0 24px;
+}
+
+
+.blog-details-quote-box{
+    position: relative;
+    display: block;
+    background: var(--thm-base);
+    border-radius: 10px;
+    padding: 45px 40px 46px;
+    padding-right: 50px;
+    margin-top: 44px;
+}
+.blog-details-quote-box .inner-content {
+    position: relative;
+    display: block;
+    padding-left: 80px;    
+} 
+.blog-details-quote-box .inner-content .icon{
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    border: 1px solid var(--thm-primary);
+    border-radius: 50%;
+    padding: 12px;
+}
+.blog-details-quote-box .inner-content .icon span:before{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--thm-primary);
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 30px;
+    line-height: 50px;
+    text-align: center;
+}
+.blog-details-quote-box .inner-content .text{
+    position: relative;
+    display: block;
+    padding-left: 30px;
+}
+.blog-details-quote-box .inner-content .text h3{
+    color: #ffffff;
+    font-size: 20px;
+    line-height: 32px;
+    font-weight: 600;
+    margin: 0 0 19px;
+}
+.blog-details-quote-box .inner-content .text h5{
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+.blog-details-text-2{
+    position: relative;
+    display: block;
+    padding-top: 57px;
+}
+.blog-details-text-2 h3{
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 600;
+    margin: 0 0 24px;
+}
+.blog-details-text-2 ul{
+    position: relative;
+    display: block;
+    padding-top: 11px;
+}
+.blog-details-text-2 ul li{
+    position: relative;
+    display: block;
+    padding-left: 35px;
+    margin-bottom: 14px;
+}
+.blog-details-text-2 ul li:last-child{
+    margin-bottom: 0;
+}
+.blog-details-text-2 ul li:before{
+    position: absolute;
+    top: 2px;
+    left: 0;
+    content: "\f0b2";
+    font-family: FontAwesome;
+    color: var(--thm-base);
+}
+
+
+
+.tag-social-share-box {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    flex-wrap: wrap;
+    margin-top: 54px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid #dae5ec;
+}
+.tag-box{
+    position: relative;
+    display: block;
+}
+.tag-box .title{
+    width: 65px;
+}
+.tag-box .title,
+.tag-box .tag-list{
+    display: table-cell;
+    vertical-align: middle;
+}
+.tag-box .title h3{
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+}
+.tag-box .tag-list li{
+    position: relative;
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+}
+.tag-box .tag-list li:last-child{
+    margin-right: 0;
+}
+.tag-box .tag-list li a{
+    position: relative;
+    display: inline-block;
+    padding: 4px 15px 8px;
+    color: #98a1a7;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid #dae5ec;
+    border-radius: 30px;
+    transition: all 200ms linear;
+    transition-delay: 0.1s;
+}
+.tag-box .tag-list li a:hover{
+    color: #ffffff;
+    border-color: var(--thm-primary);
+    background-color: var(--thm-primary);
+}
+
+.post-social-share{
+    position: relative;
+    display: block;
+}
+.post-social-share .title{
+    width: 75px;    
+}
+.post-social-share .title h3{
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;    
+}
+.post-social-share .title,
+.post-social-share .social-link{
+    display: table-cell;
+    vertical-align: middle;    
+}
+.post-social-share .social-link ul{
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+.post-social-share .social-link ul li{
+    position: relative;
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+}
+.post-social-share .social-link ul li:last-child{
+    margin-right: 0;
+}
+.post-social-share .social-link ul li a{
+    position: relative;
+    display: block;
+    height: 40px;
+    width: 40px;
+    color: #909090;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    line-height: 38px;
+    border: 1px solid #dbe6ec;
+    border-radius: 50%;
+    transition: all 200ms linear;
+    transition-delay: 0.1s;
+}
+.post-social-share .social-link ul li a:hover{
+    color: #ffffff;
+    border-color: var(--thm-primary);
+    background-color: var(--thm-primary);
+}
+
+
+
+.blog-prev-next-option {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    flex-wrap: wrap;
+    padding: 57px 0px 51px;
+}
+.blog-prev-next-option .single-box{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 50%;
+}
+.blog-prev-next-option .single-box p{
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: var(--thm-font-2);
+    margin: 0;
+}
+.blog-prev-next-option .single-box p a{
+    color: #98a1a7;
+    transition: all 200ms linear;
+    transition-delay: 0.1s;
+}
+.blog-prev-next-option .single-box p a:hover{
+    color: var(--thm-primary);
+}
+
+.blog-prev-next-option .single-box h2{
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    margin: 9px 0 0;
+}
+.blog-prev-next-option .single-box h2 a{
+    color: #151515;
+    transition: all 200ms linear;
+    transition-delay: 0.1s;
+}
+.blog-prev-next-option .single-box h2 a:hover{
+    color: var(--thm-primary);    
+}
+
+.blog-prev-next-option .single-box.left{
+    text-align: left;
+}
+.blog-prev-next-option .single-box.left p a span:before {
+    position: relative;
+    display: inline-block;
+    transform: rotate(180deg);
+    padding-left: 5px;
+    top: 1px;
+}
+.blog-prev-next-option .single-box.right{
+    text-align: right;
+}
+.blog-prev-next-option .single-box.right p a span:before {
+    position: relative;
+    display: inline-block;
+    padding-left: 5px;
+    top: 1px;
+}
+
+
+.blog-details-author {
+    position: relative;
+    display: block;
+    border: 1px solid #dae5ec;
+    border-radius: 10px;
+    background: #ffffff;
+    padding: 36px 40px 32px;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+}
+.blog-details-author .inner-box{
+    position: relative;
+    display: block;
+}
+.blog-details-author .inner-box .img-box{
+    width: 130px;
+}
+.blog-details-author .inner-box .img-box img{
+    width: 100%;
+    border-radius: 50%;
+}
+.blog-details-author .inner-box .img-box,
+.blog-details-author .inner-box .text{
+    display: table-cell;
+    vertical-align: middle;
+}
+.blog-details-author .inner-box .text {
+    position: relative;
+    padding-left: 30px;
+}
+.blog-details-author .inner-box .text h3 {
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+.blog-details-author .inner-box .text p {
+    margin: 0;
+}
+.blog-details-author .inner-box .text .social-links{
+    position: relative;
+    display: block;
+    padding-top: 16px;
+}
