@@ -1,10 +1,7 @@
-/**
- * @license
- * Unobtrusive validation support library for jQuery and jQuery Validate
- * Copyright (c) .NET Foundation. All rights reserved.
- * Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
- * @version v4.0.0
- */
+// Unobtrusive validation support library for jQuery and jQuery Validate
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// @version v3.2.11
 
 /*jslint white: true, browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true, immed: true, strict: false */
 /*global document: false, jQuery: false */
@@ -25,10 +22,10 @@
         adapters,
         data_validation = "unobtrusiveValidation";
 
-    function setValidationValues(options, ruleName, value) {
-        options.rules[ruleName] = value;
-        if (options.message) {
-            options.messages[ruleName] = options.message;
+    function setValidationValues(Package, ruleName, value) {
+        Package.rules[ruleName] = value;
+        if (Package.message) {
+            Package.messages[ruleName] = Package.message;
         }
     }
 
@@ -128,17 +125,17 @@
         var $form = $(form),
             result = $form.data(data_validation),
             onResetProxy = $.proxy(onReset, form),
-            defaultOptions = $jQval.unobtrusive.options || {},
+            defaultPackage = $jQval.unobtrusive.Package || {},
             execInContext = function (name, args) {
-                var func = defaultOptions[name];
+                var func = defaultPackage[name];
                 func && $.isFunction(func) && func.apply(form, args);
             };
 
         if (!result) {
             result = {
-                options: {  // options structure passed to jQuery Validate's validate() method
-                    errorClass: defaultOptions.errorClass || "input-validation-error",
-                    errorElement: defaultOptions.errorElement || "span",
+                Package: {  // Package structure passed to jQuery Validate's validate() method
+                    errorClass: defaultPackage.errorClass || "input-validation-error",
+                    errorElement: defaultPackage.errorElement || "span",
                     errorPlacement: function () {
                         onError.apply(form, arguments);
                         execInContext("errorPlacement", arguments);
@@ -158,7 +155,7 @@
                     $form
                         .off("reset." + data_validation, onResetProxy)
                         .on("reset." + data_validation, onResetProxy)
-                        .validate(this.options);
+                        .validate(this.Package);
                 },
                 validate: function () {  // a validation function that is called by unobtrusive Ajax
                     $form.validate();
@@ -192,8 +189,8 @@
             }
 
             valInfo = validationInfo(form);
-            valInfo.options.rules[element.name] = rules = {};
-            valInfo.options.messages[element.name] = messages = {};
+            valInfo.Package.rules[element.name] = rules = {};
+            valInfo.Package.messages[element.name] = messages = {};
 
             $.each(this.adapters, function () {
                 var prefix = "data-val-" + this.name,
@@ -283,8 +280,8 @@
         /// <param name="ruleName" type="String" optional="true">[Optional] The name of the jQuery Validate rule. If not provided, the value
         /// of adapterName will be used instead.</param>
         /// <returns type="jQuery.validator.unobtrusive.adapters" />
-        return this.add(adapterName, function (options) {
-            setValidationValues(options, ruleName || adapterName, true);
+        return this.add(adapterName, function (Package) {
+            setValidationValues(Package, ruleName || adapterName, true);
         });
     };
 
@@ -305,18 +302,18 @@
         /// <param name="maxAttribute" type="String" optional="true">[Optional] The name of the HTML attribute that
         /// contains the maximum value. The default is "max".</param>
         /// <returns type="jQuery.validator.unobtrusive.adapters" />
-        return this.add(adapterName, [minAttribute || "min", maxAttribute || "max"], function (options) {
-            var min = options.params.min,
-                max = options.params.max;
+        return this.add(adapterName, [minAttribute || "min", maxAttribute || "max"], function (Package) {
+            var min = Package.params.min,
+                max = Package.params.max;
 
             if (min && max) {
-                setValidationValues(options, minMaxRuleName, [min, max]);
+                setValidationValues(Package, minMaxRuleName, [min, max]);
             }
             else if (min) {
-                setValidationValues(options, minRuleName, min);
+                setValidationValues(Package, minRuleName, min);
             }
             else if (max) {
-                setValidationValues(options, maxRuleName, max);
+                setValidationValues(Package, maxRuleName, max);
             }
         });
     };
@@ -331,8 +328,8 @@
         /// <param name="ruleName" type="String" optional="true">[Optional] The name of the jQuery Validate rule. If not provided, the value
         /// of adapterName will be used instead.</param>
         /// <returns type="jQuery.validator.unobtrusive.adapters" />
-        return this.add(adapterName, [attribute || "val"], function (options) {
-            setValidationValues(options, ruleName || adapterName, options.params[attribute]);
+        return this.add(adapterName, [attribute || "val"], function (Package) {
+            setValidationValues(Package, ruleName || adapterName, Package.params[attribute]);
         });
     };
 
@@ -373,32 +370,32 @@
     adapters.addBool("creditcard").addBool("date").addBool("digits").addBool("email").addBool("number").addBool("url");
     adapters.addMinMax("length", "minlength", "maxlength", "rangelength").addMinMax("range", "min", "max", "range");
     adapters.addMinMax("minlength", "minlength").addMinMax("maxlength", "minlength", "maxlength");
-    adapters.add("equalto", ["other"], function (options) {
-        var prefix = getModelPrefix(options.element.name),
-            other = options.params.other,
+    adapters.add("equalto", ["other"], function (Package) {
+        var prefix = getModelPrefix(Package.element.name),
+            other = Package.params.other,
             fullOtherName = appendModelPrefix(other, prefix),
-            element = $(options.form).find(":input").filter("[name='" + escapeAttributeValue(fullOtherName) + "']")[0];
+            element = $(Package.form).find(":input").filter("[name='" + escapeAttributeValue(fullOtherName) + "']")[0];
 
-        setValidationValues(options, "equalTo", element);
+        setValidationValues(Package, "equalTo", element);
     });
-    adapters.add("required", function (options) {
+    adapters.add("required", function (Package) {
         // jQuery Validate equates "required" with "mandatory" for checkbox elements
-        if (options.element.tagName.toUpperCase() !== "INPUT" || options.element.type.toUpperCase() !== "CHECKBOX") {
-            setValidationValues(options, "required", true);
+        if (Package.element.tagName.toUpperCase() !== "INPUT" || Package.element.type.toUpperCase() !== "CHECKBOX") {
+            setValidationValues(Package, "required", true);
         }
     });
-    adapters.add("remote", ["url", "type", "additionalfields"], function (options) {
+    adapters.add("remote", ["url", "type", "additionalfields"], function (Package) {
         var value = {
-            url: options.params.url,
-            type: options.params.type || "GET",
+            url: Package.params.url,
+            type: Package.params.type || "GET",
             data: {}
         },
-            prefix = getModelPrefix(options.element.name);
+            prefix = getModelPrefix(Package.element.name);
 
-        $.each(splitAndTrim(options.params.additionalfields || options.element.name), function (i, fieldName) {
+        $.each(splitAndTrim(Package.params.additionalfields || Package.element.name), function (i, fieldName) {
             var paramName = appendModelPrefix(fieldName, prefix);
             value.data[paramName] = function () {
-                var field = $(options.form).find(":input").filter("[name='" + escapeAttributeValue(paramName) + "']");
+                var field = $(Package.form).find(":input").filter("[name='" + escapeAttributeValue(paramName) + "']");
                 // For checkboxes and radio buttons, only pick up values from checked fields.
                 if (field.is(":checkbox")) {
                     return field.filter(":checked").val() || field.filter(":hidden").val() || '';
@@ -410,21 +407,21 @@
             };
         });
 
-        setValidationValues(options, "remote", value);
+        setValidationValues(Package, "remote", value);
     });
-    adapters.add("password", ["min", "nonalphamin", "regex"], function (options) {
-        if (options.params.min) {
-            setValidationValues(options, "minlength", options.params.min);
+    adapters.add("password", ["min", "nonalphamin", "regex"], function (Package) {
+        if (Package.params.min) {
+            setValidationValues(Package, "minlength", Package.params.min);
         }
-        if (options.params.nonalphamin) {
-            setValidationValues(options, "nonalphamin", options.params.nonalphamin);
+        if (Package.params.nonalphamin) {
+            setValidationValues(Package, "nonalphamin", Package.params.nonalphamin);
         }
-        if (options.params.regex) {
-            setValidationValues(options, "regex", options.params.regex);
+        if (Package.params.regex) {
+            setValidationValues(Package, "regex", Package.params.regex);
         }
     });
-    adapters.add("fileextensions", ["extensions"], function (options) {
-        setValidationValues(options, "extension", options.params.extensions);
+    adapters.add("fileextensions", ["extensions"], function (Package) {
+        setValidationValues(Package, "extension", Package.params.extensions);
     });
 
     $(function () {
