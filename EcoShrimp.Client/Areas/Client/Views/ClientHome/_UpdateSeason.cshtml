@@ -1,0 +1,95 @@
+﻿@model EcoShrimp.Client.Areas.Client.ViewModels.Season.SeasonVM
+
+
+<div class="modal fade" id="UpdateSeason" tabindex="-1" role="dialog" aria-labelledby="UpdateSeasonLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" style="width: 700px">
+			<form asp-action="Update" asp-controller="ClientSeason" id="UpdateSeasonForm" method="post">
+				<div class="modal-header">
+					<h4 class="modal-title fs-6" id="UpdateSeasonLabel">Cập nhật thông tin đợt nuôi</h4>
+					<button type="button" class="close" onclick="CloseModalUpdateSeason()">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="padding-top: 0px">
+					<div class="row">
+						<div class="col-12 d-flex justify-content-end" style="margin-top: 7px">
+							<span style="font-size: 12px;">Ngày cập nhật: @DateTime.Now.ToString("dd/MM/yy")</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<input type="text" asp-for="Id" id="UpdateSeasonId" type="hidden" />
+							<div class="py-2">Tên đợt nuôi: <span style="color: red;">*</span></div>
+							<input type="text" asp-for="Name" id="NameSeason" class="form-control" placeholder="Vd: Đông xuân 2025" />
+							<span asp-validation-for="Name" id="NameError" class="text-danger"></span>
+						</div>
+						<div class="col-6">
+							<div class="py-2">Mật lượng tôm nuôi con/vuông: </div>
+							<input type="text" asp-for="Density" id="DensitySeason" class="form-control" placeholder="Vd: 2000" />
+							<span asp-validation-for="Density" class="text-danger"></span>
+						</div>
+						<div class="col-6">
+							<div class="py-2">Ngày bắt đầu: </div>
+							<input type="datetime" asp-for="StartDate" id="CreateDateSeason" readonly value="@DateTime.Now.ToString("dd/MM/yyyy")" class="form-control" />
+							<span asp-validation-for="StartDate"  class="text-danger"></span>
+						</div>
+						<div class="col-6">
+							<div class="py-2">Ngày dự kiến kết thúc:</div>
+							<input type="date" asp-for="EndDate" id="EndDateSeason" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+							<span asp-validation-for="EndDate" class="text-danger"></span>
+						</div>
+						<div class="col-12">
+							<div class="py-2">Mô tả: </div>
+							<textarea class="form-control" asp-for="Desc" id="DescSeason" rows="4" height="80px"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModalUpdateSeason()">Hủy</button>
+					<button type="submit" class="btn btn-primary">Cập nhật</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function CloseModalUpdateSeason() {
+		$('#UpdateSeason').modal('hide');
+	}
+
+	// Hàm để mở modal
+	function UpdateSeason(id, name, density, createDate, endDate, desc) {
+		$('#UpdateSeasonId').val(id);
+		console.log("Id: " + id);
+		$('#NameSeason').val(name);
+		$('#DensitySeason').val(density);
+		$('#CreateDateSeason').val(createDate);
+		$('#EndDateSeason').val(endDate);
+		$('#DescSeason').val(desc);
+		$('#UpdateSeason').modal('show');
+	}
+
+		// Hàm kiểm tra validate
+	function validateForm(event) {
+		let isValid = true;
+
+		// Lấy giá trị của các trường
+		let name = document.getElementById('Name').value.trim();
+
+		// Kiểm tra trường 'Tên loại'
+		if (name === "") {
+			document.getElementById('NameError').innerText = "Thuộc tính là bắt buột.";
+			isValid = false;
+		} else {
+			document.getElementById('NameError').innerText = "";
+		}
+
+		// Nếu không hợp lệ, ngừng submit form
+		if (!isValid) {
+			event.preventDefault();
+		}
+	}
+
+</script>
+

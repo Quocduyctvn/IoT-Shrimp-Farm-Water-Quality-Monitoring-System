@@ -1,0 +1,79 @@
+﻿@model IEnumerable<EcoShrimp.Data.Entities.AppNews>
+
+
+<section class="blog-style1-area p-0">
+	<div class="container">
+
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="blog-style1_top pb-4">
+					<div class="sec-title">
+						<h2>Tin tức</h2>
+						<div class="decor">
+							<img src="assets-template/images/shape/decor.png" alt="">
+						</div>
+					</div>
+					<div class="btns-box">
+						<a class="btn-one" asp-action="Index" asp-controller="News">
+							<div class="round"></div>
+							<span class="txt">Xem thêm</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row text-right-rtl">
+			@foreach (var item in Model)
+			{
+				<div class="col-xl-4">
+					<div class="single-blog-style1 wow fadeInUp" data-wow-duration="1500ms">
+						<div class="img-holder" style="width: 100%; height: 350px; overflow: hidden;">
+							<div class="inner" style="width: 100%; height: 100%;">
+								<img src="@item.Path" alt="" class="img-fluid blog-image" style="width: 100%; height: 100%; object-fit: cover;">
+							</div>
+							<div class="categories">
+								<h6>
+									<i class="fa fa-folder"></i>
+									@if (DateTime.Now - item.CreatedDate < TimeSpan.FromDays(15))
+									{
+										<span>Tin mới</span>
+									}
+								</h6>
+							</div>
+						</div>
+						<div class="text-holder">
+							<h3 class="blog-title mb-0">
+								<a asp-action="Detail" asp-controller="News" asp-route-id="@item.Id">
+									<span style="font-size: 12px; font-weight: 100">
+										Danh mục: @item.appCateNew.Name
+									</span>
+									<br>
+									@{
+										var maxLength = 30;
+										var displayTitle = item.Title;
+										if (item.Title.Length > maxLength)
+										{
+											var truncatedTitle = item.Title.Substring(0, maxLength);
+											var lastSpaceIndex = truncatedTitle.LastIndexOf(' '); // Tìm vị trí khoảng trắng cuối cùng
+
+											displayTitle = truncatedTitle.Substring(0, lastSpaceIndex) + "..";
+										}
+									}
+									@displayTitle
+								</a>
+							</h3>
+							<div class="text">
+								<p>@(item.Summary.Length > 120 ? item.Summary.Substring(0, 120) + "..." : item.Summary)</p>
+							</div>
+							<div class="btns-box">
+								<a class="btn-two" asp-action="Detail" asp-controller="News" asp-route-id="@item.Id"><span class="icon-right-arrow"></span>Xem thêm</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			}
+		</div>
+	</div>
+</section>

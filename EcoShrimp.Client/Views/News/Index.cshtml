@@ -1,0 +1,242 @@
+﻿@using EcoShrimp.Data.Entities
+@model X.PagedList.PagedList<EcoShrimp.Data.Entities.AppNews>
+
+@{
+	var news = (TempData["News"] as List<AppNews>)?.OrderBy(x => x.Title).Take(5).ToList();
+	var products = TempData["Products"] as List<AppProducts>;
+}
+
+<section class="breadcrumb-area pb-0">
+	<div class="breadcrumb-area-bg" style="background-image: url(/assets-template/images/product-detail/149d5084711t53633l0.jpg); height: 270px"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="inner-content text-center" style="top: -80px">
+					<div class="title">
+						<div style="font-size: 35px; padding: 10px 0; color: white">Bài viết của chúng tôi</div>
+					</div>
+					<div class="breadcrumb-menu">
+						<ul>
+							<li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+							<li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+							<li class="active">Bài viết </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="blog-page-four pt-2">
+	<div class="container">
+		<div class="sec-title pb-1 row d-flex justify-content-between">
+			<!-- Phần tử bên trái -->
+			<div class="col ">
+				<div class="sub-title pb-0">
+					<h5 style="font-size: 25px; color: #004da1">
+						Bài viết của chúng tôi.
+					</h5>
+				</div>
+				<div class="decor m-0 p-0">
+					<img src="assets-template/images/shape/decor.png" class="m-0 p-0" alt="">
+				</div>
+			</div>
+
+			<!-- Phần tử bên phải -->
+			<div class="col d-flex justify-content-end">
+				<div class="serach-button-style1">
+					<button type="button" class="search-toggler"><i class="icon-search"></i></button>
+				</div>
+			</div>
+		</div>
+
+		@if (TempData["searched"] != null && !string.IsNullOrEmpty(TempData["searched"]!.ToString()))
+		{
+			<div class="text-center">
+				<span class="text-danger"><i>Kết quả tìm kiếm [@Model.Count()] danh mục </i></span> <a asp-action="Index" class="text-decoration-none text-center" style="display: inline-block">Đặt lại</a>
+			</div>
+		}
+		<div class="row text-right-rtl mt-3">
+			<div class="col-xl-8 col-lg-7">
+
+				@foreach (var item in Model)
+				{
+					<div class="single-blog-style1 single-blog-style4 wow fadeInUp animated" data-wow-duration="1500ms">
+						<div class="inner-box">
+							<div class="img-holder" style="width: 340px; height: 270px; overflow: hidden;">
+								<div class="inner" style="width: 100%; height: 100%;">
+									<img src="@item.Path" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+								</div>
+								<div class="categories">
+									<h6>
+										<i class="fa fa-folder"></i>
+										@if (DateTime.Now - item.CreatedDate < TimeSpan.FromDays(15))
+										{
+											<span>Tin mới</span>
+										}
+									</h6>
+								</div>
+							</div>
+							<div class="text-holder">
+								<h3 class="blog-title mb-0">
+									<a asp-action="Detail" asp-controller="News" asp-route-id="@item.Id">
+										<span style="font-size: 12px; font-weight: 100">
+											Danh mục: @item.appCateNew.Name
+										</span>
+										<br>
+										@{
+											var maxLength = 30;
+											var displayTitle = item.Title;
+											if (item.Title.Length > maxLength)
+											{
+												var truncatedTitle = item.Title.Substring(0, maxLength);
+												var lastSpaceIndex = truncatedTitle.LastIndexOf(' '); // Tìm vị trí khoảng trắng cuối cùng
+
+												displayTitle = truncatedTitle.Substring(0, lastSpaceIndex) + "..";
+											}
+										}
+										@displayTitle
+									</a>
+								</h3>
+								<div class="text p-0">
+									<p>@(item.Summary.Length > 125 ? item.Summary.Substring(0, 125) + "..." : item.Summary)</p>
+								</div>
+								<div class="btns-box mt-1">
+									<a class="btn-two" asp-action="Detail" asp-controller="News" asp-route-id="@item.Id"><span class="icon-right-arrow"></span>Xem thêm</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+
+				@if (TempData["searched"] != null && !string.IsNullOrEmpty(TempData["searched"]!.ToString()))
+				{
+					<div class="text-start mb-2">
+						<span class="text-primary">
+							<i class="fab fa-battle-net" style="color: #2ccbed"></i> <i>Bài viết liên quan </i>
+						</span>
+					</div>
+					@foreach (var item in news.Take(3).OrderBy(x => x.Summary))
+					{
+						<div class="single-blog-style1 single-blog-style4 wow fadeInUp animated" data-wow-duration="1500ms">
+							<div class="inner-box">
+								<div class="img-holder" style="width: 340px; height: 270px; overflow: hidden;">
+									<div class="inner" style="width: 100%; height: 100%;">
+										<img src="@item.Path" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+									</div>
+									<div class="categories">
+										<h6>
+											<i class="fa fa-folder"></i>
+											@if (DateTime.Now - item.CreatedDate < TimeSpan.FromDays(15))
+											{
+												<span>Tin mới</span>
+											}
+										</h6>
+									</div>
+								</div>
+								<div class="text-holder">
+									<h3 class="blog-title mb-0">
+										<a asp-action="Detail" asp-controller="News" asp-route-id="@item.Id">
+											<span style="font-size: 12px; font-weight: 100">
+												Danh mục: @item.appCateNew.Name
+											</span>
+											<br>
+											@{
+												var maxLength = 30;
+												var displayTitle = item.Title;
+												if (item.Title.Length > maxLength)
+												{
+													var truncatedTitle = item.Title.Substring(0, maxLength);
+													var lastSpaceIndex = truncatedTitle.LastIndexOf(' '); // Tìm vị trí khoảng trắng cuối cùng
+
+													displayTitle = truncatedTitle.Substring(0, lastSpaceIndex) + "..";
+												}
+											}
+											@displayTitle
+										</a>
+									</h3>
+									<div class="text p-0">
+										<p>@(item.Summary.Length > 125 ? item.Summary.Substring(0, 125) + "..." : item.Summary)</p>
+									</div>
+									<div class="btns-box mt-1">
+										<a class="btn-two" asp-action="Detail" asp-controller="News" asp-route-id="@item.Id"><span class="icon-right-arrow"></span>Xem thêm</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+				}
+			</div>
+
+			<div class="col-xl-4 col-lg-5">
+				<div class="sidebar-content-box">
+					<div class="single-sidebar-box">
+						<div class="border-box" style="background-image: url(assets/images/shape/zikjak-line-2.png);"></div>
+						<div class="title pb-3">
+							<h3>Bài viết nổi bật</h3>
+							<div class="decor">
+								<img src="assets/images/shape/decor.png" alt="">
+							</div>
+						</div>
+						<div class="sidebar-blog-post">
+							<ul class="blog-post">
+								@foreach (var item in news)
+								{
+									<li>
+										<div class="inner">
+											<div class="img-box" style="width: 90px; height: 90px; overflow: hidden;">
+												<img src="@item.Path" alt="Awesome Image" style="width: 100%; height: 100%; object-fit: cover;">
+												<div class="overlay-content">
+													<a asp-action="Detail" asp-controller="News" asp-route-id="@item.Id"><i class="fa fa-link" aria-hidden="true"></i></a>
+												</div>
+											</div>
+											<div class="title-box ps-2">
+												<h6 class="mb-1 pt-2"><i class="fa fa-calendar" aria-hidden="true"></i> @item.CreatedDate?.ToString("dd/MM/yy")</h6>
+												<h4>
+													<a asp-action="Detail" asp-controller="News" asp-route-id="@item.Id">
+														@{
+															var maxLength = 35;
+															var displayTitle = item.Title;
+															if (item.Title.Length > maxLength)
+															{
+																var truncatedTitle = item.Title.Substring(0, maxLength);
+																var lastSpaceIndex = truncatedTitle.LastIndexOf(' '); // Tìm vị trí khoảng trắng cuối cùng
+
+																displayTitle = truncatedTitle.Substring(0, lastSpaceIndex) + "..";
+															}
+														}
+														@displayTitle
+													</a>
+												</h4>
+											</div>
+										</div>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+					<div class="single-sidebar-box">
+						<div class="border-box" style="background-image: url(assets/images/shape/zikjak-line-2.png);"></div>
+						<div class="title pb-3">
+							<h3>Sản phẫm</h3>
+							<div class="decor">
+								<img src="assets/images/shape/decor.png" alt="">
+							</div>
+						</div>
+						<ul class="service-pages">
+							@foreach (var item in products)
+							{
+								<div class="d-block">
+									<i class="fas fa-angle-right"></i> <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id" class="p-0 m-0">@item.Name</a>
+								</div>
+							}
+						</ul>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>

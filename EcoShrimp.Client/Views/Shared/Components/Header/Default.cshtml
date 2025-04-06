@@ -1,0 +1,105 @@
+﻿@model EcoShrimp.Data.Entities.AppShrimp
+
+<header class="main-header header-style-one " style="position: fixed; width: 100%; z-index: 9999;">
+	<div class="header-top">
+		<div class="container">
+			<div class="outer-box clearfix">
+				<div class="header-top_left pull-left">
+					<div class="text">
+						<p>Liên hệ chúng tôi</p>
+					</div>
+					<div class="header-contact-info1">
+						<ul>
+							<li><span class="icon-calling"></span><a href="tel:@Model.Phone">@Model.Phone</a></li>
+							@if (!string.IsNullOrEmpty(Model.OpentTime))
+							{
+								<li><span class="icon-clock"></span>@Model.OpentTime</li>
+							}
+						</ul>
+					</div>
+				</div>
+				<div class="header-top_right pull-right">
+					<div class="header-mail-box">
+						<span class="icon-email"></span>
+						<p><a href="mailto:@Model.Email">Gửi mail cho chúng tôi</a></p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!--Start Header-->
+	<div class="header">
+		<div class="auto-container">
+			<div class="outer-box">
+				<div class="header-left">
+					<div class="logo">
+						<a asp-action="Index" asp-controller="Home"><img src="@Model.LogoUrl" width="150px" alt="Awesome Logo" title=""></a>
+					</div>
+				</div>
+
+				<div class="header-right">
+					<div class="nav-outer style1 clearfix">
+						<!--Mobile Navigation Toggler-->
+						<div class="mobile-nav-toggler">
+							<div class="inner">
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</div>
+						</div>
+						<!-- Main Menu -->
+						<nav class="main-menu style1 navbar-expand-md navbar-light">
+							<div class="collapse navbar-collapse show clearfix" id="navbarSupportedContent">
+								<ul class="navigation clearfix">
+									<li class="dropdown current">
+										<a asp-action="Index" asp-controller="Home"><span>Trang chủ </span></a>
+									</li>
+									<li class="dropdown">
+										<a asp-action="Index" asp-controller="Product"><span>Sản phẫm </span></a>
+									</li>
+									<li class="dropdown">
+										<a asp-action="Index" asp-controller="News"><span>Tin tức</span></a>
+									</li>
+
+									<li><a asp-action="Index" asp-controller="Contact"><span>Liên hệ</span></a></li>
+								</ul>
+							</div>
+						</nav>
+						<!-- Main Menu End-->
+					</div>
+
+					<div class="header-right_buttom">
+						<div class="btns-box">
+							<a class="btn-one" asp-action="Login" asp-controller="Account">
+								<div class="round"></div>
+								<span class="txt">Đăng nhập</span>
+							</a>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Mobile Menu  -->
+	<div class="mobile-menu">
+		<div class="menu-backdrop"></div>
+		<div class="close-btn"><span class="icon fa fa-times-circle"></span></div>
+		<nav class="menu-box">
+			<div class="nav-logo"><a href="index-2.html"><img src="~/assets-template/images/resources/mobilemenu-logo.png" alt="" title=""></a></div>
+			<div class="menu-outer"><!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header--></div>
+			<!--Social Links-->
+			<div class="social-links">
+				<ul class="clearfix">
+					<li><a href="#"><span class="fab fa fa-facebook-square"></span></a></li>
+					<li><a href="#"><span class="fab fa fa-twitter-square"></span></a></li>
+					<li><a href="#"><span class="fab fa fa-pinterest-square"></span></a></li>
+					<li><a href="#"><span class="fab fa fa-google-plus-square"></span></a></li>
+					<li><a href="#"><span class="fab fa fa-youtube-square"></span></a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+</header>

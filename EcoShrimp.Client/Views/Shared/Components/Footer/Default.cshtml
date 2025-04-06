@@ -1,0 +1,108 @@
+﻿@model EcoShrimp.Data.Entities.AppShrimp
+
+<footer class="footer-area mt-4">
+	<!--Start Footer-->
+	<div class="footer">
+		<div class="container-fluid" style="padding: 0 30px">
+			<div class="row text-right-rtl">
+				<!--Start single footer widget-->
+				<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 wow animated fadeInUp" data-wow-delay="0.1s">
+					<div class="single-footer-widget marbtm50">
+						<div class="our-company-info">
+							<div class="footer-logo">
+								<a href="index-2.html"><img src="@Model.LogoUrl" alt="" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--End single footer widget-->
+				<!--Start single footer widget-->
+				<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 wow animated fadeInUp" data-wow-delay="0.1s">
+					<div class="single-footer-widget marbtm50">
+						<div class="our-company-info">
+							<div class="title">
+								<h3>về chúng tôi</h3>
+								<div class="decor">
+									<img src="~/assets-template/images/shape/decor.png" alt="">
+								</div>
+							</div>
+							<div class="our-company-info-list">
+								<ul>
+									<li><span class="icon-check-mark"></span>Địa chỉ: @Model.Address</li>
+									<li><span class="icon-check-mark"></span>Hotline: @Model.Phone</li>
+									@if(Model.SubPhone != null){
+										<li><span class="icon-check-mark"></span>Phòng kỹ thuật: @Model.SubPhone</li>
+									}
+									<li><span class="icon-check-mark"></span>Email: @Model.Email</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xl-2 col-lg-6 col-md-6 col-sm-12 wow animated fadeInUp" data-wow-delay="0.1s">
+					<div class="single-footer-widget marbtm50">
+						<div class="our-company-info">
+							<div class="title">
+								<h3>
+									DANH MỤC
+								</h3>
+								<div class="decor">
+									<img src="~/assets-template/images/shape/decor.png" alt="">
+								</div>
+							</div>
+							<div class="our-company-info-list">
+								<ul>
+									<li>
+										<a asp-action="Index" class="text-light">
+											<span class="icon-check-mark"></span>Trang chủ
+										</a>
+									</li>
+									<li>
+										<a asp-action="Index" asp-controller="Product" class="text-light">
+											<span class="icon-check-mark"></span>Sản phẫm
+										</a>
+									</li>
+									<li>
+										<a asp-action="Index" asp-controller="News" class="text-light">
+											<span class="icon-check-mark"></span>Tin tức
+										</a>
+									</li>
+									<li>
+										<a asp-action="Index" asp-controller="Contact" class="text-light">
+											<span class="icon-check-mark"></span>Liên hệ
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 wow animated fadeInUp" data-wow-delay="0.1s">
+					<div class="single-footer-widget marbtm50">
+						<div class="our-company-info">
+							<div class="title">
+								<h3>
+									Chăm sóc khách hàng
+								</h3>
+								<div class="decor">
+									<img src="~/assets-template/images/shape/decor.png" alt="">
+								</div>
+							</div>
+							<div class="our-company-info-list">
+								<ul>
+									<li><span class="icon-check-mark"></span>Chính sách giao hàng</li>
+									<li><span class="icon-check-mark"></span>Chính sách đổi trả</li>
+									<li><span class="icon-check-mark"></span>Chính sách về bảo mật thông tin</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!--End Footer-->
+
+</footer>

@@ -1,0 +1,72 @@
+﻿@model ICollection<EcoShrimp.Data.Entities.AppProducts>
+
+<!--Start Service Style1 Area-->
+<section class="service-style1-area pt-4 pb-4">
+	<div class="service-style1_pattern-bg" style="background-image: url(assets-template/images/pattern/service-style1-area-pt.jpg);"></div>
+	<div class="container">
+		<div class="sec-title text-center">
+			<div class="sub-title">
+				<h5>Giải pháp công nghệ</h5>
+			</div>
+			<h2>Thiết bị giám sát chất lượng nước ao tôm <br> Nổi bật tại Shrimp.com</h2>
+			<div class="decor">
+				<img src="assets-template/images/shape/decor.png" alt="">
+			</div>
+		</div>
+		<div class="row d-flex align-items-center justify-content-center">
+			@foreach (var item in Model)
+			{
+				<div class="col-xl-4 col-lg-4">
+					<div class="single-service-style1 text-center wow fadeInUp" data-wow-delay="00ms" data-wow-duration="1500ms">
+						<div class="single-service-style1__bg" style="background-image: url(assets-template/images/shape/single-service-box-bg.png);"></div>
+						<div class="img-holder">
+							<div class="inner">
+								<img src="@item.appImges.FirstOrDefault().Path" alt="">
+							</div>
+							<div class="overlay-icon">
+								<a href="#"><span class="icon-water-dispenser"></span></a>
+							</div>
+						</div>
+						<div class="title-holder">
+							<h3>
+								<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id">
+									@{
+										var maxLength = 30;
+										var displayTitle = item.Name;
+										if (item.Name.Length > maxLength)
+										{
+											var truncatedTitle = item.Name.Substring(0, maxLength);
+											var lastSpaceIndex = truncatedTitle.LastIndexOf(' '); // Tìm vị trí khoảng trắng cuối cùng
+
+											displayTitle = truncatedTitle.Substring(0, lastSpaceIndex) + "..";
+										}
+									}
+									@displayTitle
+								</a>
+							</h3>
+							<div class="inner-text">
+								<p>@(item.Summary.Length > 60 ? item.Summary.Substring(0, 60) + "..." : item.Summary)</p>
+							</div>
+							<div class="readmore-button">
+								<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id"><span class="icon-right-arrow"></span>Xem thêm</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="service-style1_btns-box text-center pt-0">
+					<a class="btn-one" asp-action="Index" asp-controller="Product">
+						<div class="round"></div>
+						<span class="txt">Xem tất cả</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+<!--End Service Style1 Area-->

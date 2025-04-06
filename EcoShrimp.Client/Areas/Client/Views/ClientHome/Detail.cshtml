@@ -1,0 +1,561 @@
+﻿@using EcoShrimp.Data.Entities
+@model EcoShrimp.Data.Entities.AppConnects
+@{
+	ViewBag.Title = "Sensor Detail";
+	var farm = ViewData["farm"] as AppFarms;
+	var times = TempData["times"] as List<AppTimeIntervals>;
+	var ValueTimeSelected = farm.IdTime;
+}
+<style>
+	.breadcrumb-area-bg {
+		background-image: url(/assets-template/images/slides/slide-v1-1.jpg);
+		background-repeat: no-repeat;
+		background-size: 100% auto; /* Đảm bảo ảnh luôn phủ chiều rộng mà không vỡ */
+		background-position: center top;
+		height: 180px;
+		border-radius: 10px 10px 5px 5px;
+	}
+</style>
+<section class="breadcrumb-area pb-0">
+	<div class="breadcrumb-area-bg" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+		<div class="container text-center" style="position: absolute; top: 30px; z-index: 20">
+			<h4 class="mx-1">Trang trại: @farm.FarmName</h4>
+			<div class="row">
+				<div class="col-12 h4 m-0">
+					Vuông: @Model.appSeasons.appPond.Name
+				</div>
+				<div class="col-12 m-0">
+					Vụ mùa: @Model.appSeasons?.Name
+				</div>
+				<div class="col-12 m-0">
+					Thiết bị: @Model.appProInstances.Name
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Đặt ảnh bên dưới chữ -->
+		<div style="position: absolute; top: -30px; right: -40px">
+			<img src="~/assets/images/shrimp/may-khongnen.png" data-aos="fade-up" data-aos-delay="100" width="300px" />
+		</div>
+	</div>
+
+	<div style="position: absolute; left: 35px; top: 160px">
+		<div class="row px-0 mt-1 d-flex justify-content-between align-items-center" style="position: relative">
+			<!-- Bên trái -->
+			<div class="col-md-12  text-start">
+				<span class="me-2" style="color: white">Trạng thái kết nối:</span>
+				<span id="deviceStatus">
+					<span class="text-muted">Đang kiểm tra...</span>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	@* <div style="position: absolute; left: 35px; top: 50px">
+		<img src="~/assets/images/shrimp/shrimp1-khongnen.png" data-aos="zoom-in" data-aos-delay="700" width="300px" />
+	</div> *@
+
+	<div style="position: absolute; right: 50px; top: 40px">
+		<img src="~/assets/images/shrimp/shrimp2-khongnen.png" data-aos="flip-right" data-aos-delay="700" width="250px" />
+	</div>
+</section>
+
+
+<div class="row justify-content-between align-items-center mt-4">
+	<!-- Cột chọn ngày -->
+	<div class="col-md-4 d-flex flex-column">
+		<label for="datePicker">Chọn ngày:</label>
+		<div class="d-flex align-items-center">
+			<input type="date" id="datePicker" value="@DateTime.Now.ToString("yyyy-MM-dd")"
+				   class="form-control flex-grow-1 me-2" onchange="fetchSensorData()">
+		</div>
+	</div>
+
+	<!-- Cột khoảng cách điểm biểu đồ -->
+@* 	<div class="col-md-3 d-flex flex-column">
+		<label>Khoảng cách điểm biểu đồ:</label>
+		<select id="filter-month" class="form-control" data-instance-id="@Model.appProInstances.Id" onchange="updateAppProInstance(this)">
+			@foreach (var item in times)
+			{
+				if (Model.appProInstances.IdTime == item.Id)
+				{
+					<option value="@item.Id" selected data-value="@item.Value">@item.Label</option>
+				}
+				else
+				{
+					<option value="@item.Id" data-value="@item.Value">@item.Label</option>
+				}
+			}
+		</select>
+	</div> *@
+</div>
+
+
+
+<div class="chart-container mt-4">
+	<canvas id="phChart" style="width: 550px; height: 350px;"></canvas>
+	<canvas id="temperatureChart" style="width: 550px; height: 350px;"></canvas>
+	<canvas id="doChart" style="width: 550px; height: 350px;"></canvas>
+	<canvas id="nh4Chart" style="width: 550px; height: 350px;"></canvas>
+	<canvas id="salChart" style="width: 550px; height: 350px;"></canvas>
+	<canvas id="turChart" style="width: 550px; height: 350px;"></canvas>
+</div>
+
+
+<div class="row" style="margin-top: 20px">
+	<div class="form-group">
+		<partial name="_BackToList" />
+	</div>
+</div>
+
+<!-- Thêm các thư viện JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Đảm bảo jQuery được tải đúng -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Thêm Chart.js -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> <!-- Thêm jQuery UI cho Autocomplete -->
+<script src="https://unpkg.com/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script> <!-- Thêm thư viện Masonry -->
+
+<script>
+
+
+
+	//--------------------------------------------------------------------------------------------------
+
+	var idConnect = @Model.Id;  // Lấy IdConnect từ Controller truyền sang View
+
+	let lastUpdateTime = null;
+
+		// Gọi API ngay khi trang load xong
+	document.addEventListener("DOMContentLoaded", function () {
+		fetchSensorData();  // Gọi API ngay lập tức khi trang tải xong
+		setInterval(updateCharts, 1000); // Kiểm tra mỗi giây
+	});
+		// Mặc định chọn ngày hôm nay
+
+
+	function updateCharts() {
+		let currentTime = new Date();
+
+		let roundedTime = new Date(currentTime);
+		roundedTime.setSeconds(0, 0); // Đặt giây và mili giây về 0
+
+		// Kiểm tra nếu giây là 0 (đầu mỗi phút)
+		if (currentTime.getSeconds() === 0 || currentTime.getSeconds() === 3) {
+			// Nếu đã cập nhật dữ liệu cho phút này rồi, không cập nhật lại
+			if (lastUpdateTime &&
+				roundedTime.getHours() === lastUpdateTime.getHours() &&
+				roundedTime.getMinutes() === lastUpdateTime.getMinutes()) {
+				console.log("Chỉ cập nhật một lần mỗi phút.");
+				return;
+			}
+
+			// Cập nhật thời gian đã cập nhật
+			lastUpdateTime = roundedTime;
+
+			// Gọi API cập nhật dữ liệu
+
+			console.log("Cập nhật biểu đồ tại:", currentTime.toLocaleTimeString());
+			fetchSensorData();
+		}
+
+			let deviceId = @Model.appProInstances.Id;
+			checkConnection(deviceId);
+	}
+
+
+	function fetchSensorData() {
+		let now = new Date();
+		let datePicker = document.getElementById("datePicker").value; // Lấy ngày từ input
+		console.log("Ngày datePicker:",datePicker);
+		console.log("Ngày now:",now);
+		let selectedDate = datePicker ? new Date(datePicker) : now;
+
+		// Lấy ngày hiện tại (YYYY-MM-DD)
+		let today = now.toISOString().split("T")[0];
+		let selectedDay = datePicker ? datePicker : new Date().toISOString().split("T")[0];
+
+		let endDate;
+		let day = parseInt(selectedDay.split("-")[2], 10);
+			console.log("Ngày chọn:", selectedDay);
+			console.log("Ngày hiện tại:", now.getDate());
+		if (day === now.getDate()) {
+			endDate = now; // Nếu là hôm nay, giữ nguyên `now`
+			console.log("Date 1:", endDate);
+		} else {
+			let endOfDay = new Date(selectedDate);
+			endOfDay.setHours(23, 59, 59, 999); // Đặt giờ thành cuối ngày
+
+			endDate = endOfDay; // Gán `endOfDay` vào `endDate`
+			console.log("Date 2:", endDate);
+		}
+
+		// ✅ Định dạng `endDate` giống `now`
+		let formattedEndDate = formatDate(endDate);
+
+		console.log("Start Date:", selectedDay);
+		console.log("End Date:", formattedEndDate);
+		console.log("Date:", formatDate(now));
+
+		function formatDate(date) {
+			return date.toString(); // Giữ định dạng giống `now`
+		}
+
+
+		$.ajax({
+			url: '@Url.Action("GetSensorData", "ClientHome")',
+			type: 'GET',
+			data: { idConnect: idConnect, dateSelected: selectedDay },
+			success: function (data) {
+				if (data.error) {
+					console.log("Lỗi từ API:", data.error);
+				} else {
+					console.log("Dữ liệu từ API:", data);
+
+					// Xử lý dữ liệu thiếu
+					let sensorData = fillMissingData(data, endDate);
+					console.log("Dữ liệu sau khi xử lý:", sensorData);
+
+					// Sắp xếp dữ liệu theo thời gian
+					sensorData.sort((a, b) => new Date(a.createdDate || a.CreatedDate) - new Date(b.createdDate || b.CreatedDate));
+
+					// Cập nhật biểu đồ
+					updatePHChart(sensorData.map(d => ({ time: new Date(d.createdDate || d.CreatedDate), value: d.ph })));
+					updateTemperatureChart(sensorData.map(d => ({ time: new Date(d.createdDate || d.CreatedDate), value: d.temp })));
+					updateDOChart(sensorData.map(d => ({ time: new Date(d.createdDate || d.CreatedDate), value: d.do })));
+					updateNH4Chart(sensorData.map(d => ({ time: new Date(d.createdDate || d.CreatedDate), value: d.nh4 })));
+					updateSalChart(sensorData.map(d => ({ time: new Date(d.createdDate || d.CreatedDate), value: d.sal })));
+					updateTurChart(sensorData.map(d => ({ time: new Date(d.createdDate || d.CreatedDate), value: d.tur })));
+				}
+			},
+			error: function (error) {
+				console.log("Lỗi khi gọi API:", error);
+			}
+		});
+	}
+
+
+
+	// Hàm điền dữ liệu thiếu mốc thời gian (sử dụng thời gian hiện tại để điền)
+	function fillMissingData(data, currentTime) {
+		let expectedTimes = generateExpectedTimes(currentTime);
+
+		// Xác định số lượng bản ghi cần lấy
+		let count = 15; // Mặc định
+		if (@ValueTimeSelected === 5) count = 20;
+		else if (@ValueTimeSelected === 10) count = 25;
+		else if (@ValueTimeSelected === 30) count = 30;
+		else if (@ValueTimeSelected === 60) count = 30;
+		else if (@ValueTimeSelected === 120) count = 30;
+		else if (@ValueTimeSelected === 240) count = 30;
+		console.log("selected", @ValueTimeSelected);
+
+
+		// Lấy 'count' bản ghi cuối cùng từ expectedTimes
+		let filteredExpectedTimes = expectedTimes.slice(-count);
+
+		let filledData = [];
+
+		filteredExpectedTimes.forEach(time => {
+			let dataAtTime = data.find(d => {
+				let createdTime = new Date(d.createdDate || d.CreatedDate);
+				createdTime.setSeconds(0, 0); // Đặt giây và mili giây về 0
+				return createdTime.getHours() === time.getHours() && createdTime.getMinutes() === time.getMinutes();
+			});
+
+			if (dataAtTime) {
+				filledData.push(dataAtTime);
+			} else {
+				filledData.push({
+					createdDate: time,
+					ph: null,
+					temp: null,
+					do: null,
+					nh4: null,
+					sal: null,
+					tur: null
+				});
+			}
+		});
+
+		// Đảm bảo bản ghi cuối cùng của data không bị loại bỏ
+		if (data.length > 0) {
+			let lastRecord = data[data.length - 1];
+			let lastRecordTime = new Date(lastRecord.createdDate || lastRecord.CreatedDate);
+			lastRecordTime.setSeconds(0, 0);
+
+			let existsInFilledData = filledData.some(d => {
+				let filledTime = new Date(d.createdDate);
+				filledTime.setSeconds(0, 0);
+				return filledTime.getTime() === lastRecordTime.getTime();
+			});
+
+			if (!existsInFilledData) {
+				filledData.push(lastRecord);
+			}
+		}
+
+		return filledData;
+	}
+
+
+	function generateExpectedTimes(currentTime) {
+		let times = [];
+
+		let startTime = new Date(currentTime);
+		startTime.setHours(0, 0, 0, 0); //Đặt về 00:00:00
+
+		while (startTime <= currentTime) {
+			times.push(new Date(startTime));
+			startTime.setMinutes(startTime.getMinutes() + @ValueTimeSelected);
+		}
+
+		return times;
+	}
+
+
+
+	function limitChartData(chart) {
+		if (chart.data.labels.length > 30) {
+			chart.data.labels.shift();  // Xóa label cũ
+			chart.data.datasets[0].data.shift();  // Xóa dữ liệu cũ
+		}
+	}
+
+	// Cập nhật biểu đồ pH
+	function updatePHChart(sensorData) {
+		let labels = sensorData.map(d => d.time.toLocaleTimeString());
+		let values = sensorData.map(d => d.value);
+
+		// Cập nhật dữ liệu biểu đồ
+		phChart.data.labels = labels;
+		phChart.data.datasets[0].data = values;
+
+		// Giới hạn số lượng điểm dữ liệu và cập nhật biểu đồ
+		limitChartData(phChart);
+		phChart.update();
+	}
+
+
+	// Cập nhật biểu đồ Nhiệt độ
+	function updateTemperatureChart(temperature) {
+		let labels = temperature.map(d => d.time.toLocaleTimeString());
+		let values = temperature.map(d => d.value);
+
+		// Cập nhật dữ liệu biểu đồ
+		temperatureChart.data.labels = labels;
+		temperatureChart.data.datasets[0].data = values;
+
+		// Giới hạn số lượng điểm dữ liệu và cập nhật biểu đồ
+		limitChartData(temperatureChart);
+		temperatureChart.update();
+	}
+
+	// Cập nhật biểu đồ DO
+	function updateDOChart(dissolvedOxygen) {
+		let labels = dissolvedOxygen.map(d => d.time.toLocaleTimeString());
+		let values = dissolvedOxygen.map(d => d.value);
+
+		// Cập nhật dữ liệu biểu đồ
+		doChart.data.labels = labels;
+		doChart.data.datasets[0].data = values;
+
+		// Giới hạn số lượng điểm dữ liệu và cập nhật biểu đồ
+		limitChartData(doChart);
+		doChart.update();
+	}
+
+	// Cập nhật biểu đồ NH4
+	function updateNH4Chart(ammonium) {
+		let labels = ammonium.map(d => d.time.toLocaleTimeString());
+		let values = ammonium.map(d => d.value);
+
+		// Cập nhật dữ liệu biểu đồ
+		nh4Chart.data.labels = labels;
+		nh4Chart.data.datasets[0].data = values;
+
+		// Giới hạn số lượng điểm dữ liệu và cập nhật biểu đồ
+		limitChartData(nh4Chart);
+		nh4Chart.update();
+	}
+
+	// Cập nhật biểu đồ Sal
+	function updateSalChart(salinity) {
+		let labels = salinity.map(d => d.time.toLocaleTimeString());
+		let values = salinity.map(d => d.value);
+
+		// Cập nhật dữ liệu biểu đồ
+		salChart.data.labels = labels;
+		salChart.data.datasets[0].data = values;
+
+		// Giới hạn số lượng điểm dữ liệu và cập nhật biểu đồ
+		limitChartData(salChart);
+		salChart.update();
+	}
+
+	// Cập nhật biểu đồ Tur
+	function updateTurChart(turbidity) {
+		let labels = turbidity.map(d => d.time.toLocaleTimeString());
+		let values = turbidity.map(d => d.value);
+
+		// Cập nhật dữ liệu biểu đồ
+		turChart.data.labels = labels;
+		turChart.data.datasets[0].data = values;
+
+		// Giới hạn số lượng điểm dữ liệu và cập nhật biểu đồ
+		limitChartData(turChart);
+		turChart.update();
+	}
+
+
+	// Khởi tạo các biểu đồ
+	var phChart = new Chart(document.getElementById('phChart'), {
+		type: 'line',
+		data: {
+			labels: [],  // Mốc thời gian hoặc các giá trị mốc
+			datasets: [{
+				label: 'pH',
+				data: [],  // Giá trị pH
+					borderColor: '#167415',
+				fill: false,
+				tension: 0.5
+			}]
+		},
+		options: {
+			responsive: false,
+			maintainAspectRatio: false,
+			options: {
+				responsive: true, // Biểu đồ sẽ đáp ứng theo kích thước màn hình
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: true  // Hiển thị chú giải cho biểu đồ
+					}
+				}
+			}
+		}
+	});
+
+
+	var temperatureChart = new Chart(document.getElementById('temperatureChart'), {
+		type: 'line',
+		data: {
+			labels: [],  // Mốc thời gian hoặc các giá trị mốc
+			datasets: [{
+				label: 'Nhiệt độ',
+				data: [],  // Giá trị nhiệt độ
+				borderColor: 'rgba(75, 192, 192, 1)',
+				fill: false,
+				tension: 0.5
+			}]
+		},
+		options: {
+			responsive: false,
+			maintainAspectRatio: false,
+			plugins: { legend: { display: true } }
+		}
+	});
+
+	var doChart = new Chart(document.getElementById('doChart'), {
+		type: 'line',
+		data: {
+			labels: [],  // Mốc thời gian hoặc các giá trị mốc
+			datasets: [{
+				label: 'Oxy hòa tan',
+				data: [],  // Giá trị DO
+				borderColor: 'rgba(255, 99, 132, 1)',
+				fill: false,
+				tension: 0.5
+			}]
+		},
+		options: {
+			responsive: false,
+			maintainAspectRatio: false,
+			plugins: { legend: { display: true } }
+		}
+	});
+
+	var nh4Chart = new Chart(document.getElementById('nh4Chart'), {
+		type: 'line',
+		data: {
+			labels: [],  // Mốc thời gian hoặc các giá trị mốc
+			datasets: [{
+				label: 'Nồng độ NH4',
+				data: [],  // Giá trị NH4
+				backgroundColor: 'rgba(153, 102, 255, 1)',
+				tension: 0.5
+			}]
+		},
+		options: {
+			responsive: false,
+			maintainAspectRatio: false,
+			plugins: { legend: { display: true } }
+		}
+	});
+
+	var salChart = new Chart(document.getElementById('salChart'), {
+		type: 'line',
+		data: {
+			labels: [],  // Mốc thời gian hoặc các giá trị mốc
+			datasets: [{
+				label: 'Độ mặn',
+				data: [],  // Giá trị độ mặn
+				borderColor: 'rgba(54, 162, 235, 1)',
+				fill: false,
+				tension: 0.5
+			}]
+		},
+		options: {
+			responsive: false,
+			maintainAspectRatio: false,
+			plugins: { legend: { display: true } }
+		}
+	});
+
+	var turChart = new Chart(document.getElementById('turChart'), {
+		type: 'line',
+		data: {
+			labels: [],  // Mốc thời gian hoặc các giá trị mốc
+			datasets: [{
+				label: 'Độ đục',
+				data: [],  // Giá trị độ đục
+				borderColor: 'rgba(255, 159, 64, 1)',
+				fill: false,
+				tension: 0.5
+			}]
+		},
+		options: {
+			responsive: false,
+			maintainAspectRatio: false,
+			plugins: { legend: { display: true } }
+		}
+	});
+
+
+	async function checkConnection(deviceId) {
+		try {
+			let response = await fetch(`/Client/ClientHome/GetConnect/${deviceId}`);
+			let data = await response.json();
+
+			let statusElement = document.getElementById("deviceStatus");
+			// console.log("data connect: " + JSON.stringify(data, null, 2));
+
+			if (data.isOnline) {
+				console.log("online");
+				statusElement.innerHTML = ` <span class="">
+												<i class="far fa-check-circle me-1 text-success"></i> Đang hoạt động
+											</span>`;
+			} else {
+				console.log("not-online");
+				statusElement.innerHTML = ` <span class=" text-danger"">
+												<i class="fas fa-times-circle"></i> Thiết bị không kết nối Wi-Fi
+											</span>`;
+			}
+		} catch (error) {
+			console.error("Lỗi kết nối:", error);
+			document.getElementById("deviceStatus").innerHTML =
+				`<span class="text-danger"><i class="fas fa-times-circle"></i> Lỗi kiểm tra kết nối</span>`;
+		}
+	}
+
+
+</script>

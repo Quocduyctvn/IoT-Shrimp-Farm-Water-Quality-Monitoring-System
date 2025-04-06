@@ -1,0 +1,88 @@
+﻿
+
+<div class="modal fade" id="InforConect" tabindex="-1" role="dialog" aria-labelledby="InforConectLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" style="width: 700px">
+			<form asp-action="CancelConect" asp-controller="ClientHome" id="InforConectForm" method="post">
+				<div class="modal-header">
+					<h4 class="modal-title fs-6" id="InforConectLabel">Thông tin kết nối thiết bị</h4>
+					<button type="button" class="close" onclick="CloseModalInforConect()">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="padding-top: 0px">
+					<div class="row">
+						<div class="col-12 d-flex justify-content-end" style="margin-top: 7px">
+							Ngày kết nối: <span style="font-size: 12px;" class="pt-1 ps-2" id="DateTimeConnect"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<input name="id" id="InforConectId" type="hidden" />
+							<div class="py-2">Tên đợt nuôi:</div>
+							<input type="text" disabled id="InfoNameSeason" class="form-control" />
+						</div>
+						<div class="col-6">
+							<div class="py-2">Tên thiết bị:</div>
+							<input type="text" disabled id="InfoNameDevice" class="form-control" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12  d-flex justify-content-end" style="margin-top: 15px">
+							<span>
+								<strong class="text-danger">Lưu ý:</strong>
+								Khi hủy kết nối, dữ liệu của đợt nuôi này vẫn sẽ được lưu trữ.
+								Tuy nhiên, nếu đợt nuôi vẫn đang hoạt động, việc hủy kết nối có thể ảnh hưởng đến dữ liệu.
+								Nếu đợt nuôi đã kết thúc, dữ liệu sẽ được đặt lại về trạng thái ban đầu.
+								</span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModalInforConect()">Hủy</button>
+					<button type="submit" class="btn btn-primary">Hủy kết nối</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function CloseModalInforConect() {
+		$('#InforConect').modal('hide');
+	}
+
+	// Hàm để mở modal
+	function InforConect(id, nameSeason, nameDevice, dateTime) {
+		$('#InforConectId').val(id);
+		$('#InfoNameSeason').val(nameSeason);
+		$('#InfoNameDevice').val(nameDevice);
+
+	let formattedDate = dateTime.split(" ")[0];
+	   $('#DateTimeConnect').text(formattedDate);
+
+		$('#InforConect').modal('show');
+	}
+
+		// Hàm kiểm tra validate
+	function validateForm(event) {
+		let isValid = true;
+
+		// Lấy giá trị của các trường
+		let name = document.getElementById('Name').value.trim();
+
+		// Kiểm tra trường 'Tên loại'
+		if (name === "") {
+			document.getElementById('NameError').innerText = "Thuộc tính là bắt buột.";
+			isValid = false;
+		} else {
+			document.getElementById('NameError').innerText = "";
+		}
+
+		// Nếu không hợp lệ, ngừng submit form
+		if (!isValid) {
+			event.preventDefault();
+		}
+	}
+
+</script>
+

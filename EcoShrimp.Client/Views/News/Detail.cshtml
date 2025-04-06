@@ -1,0 +1,132 @@
+﻿@using EcoShrimp.Data.Entities
+@model EcoShrimp.Data.Entities.AppNews
+@{
+	var products = TempData["Products"] as List<AppProducts>;
+	var news = TempData["News"] as List<AppNews>;
+}
+
+<section class="breadcrumb-area" style="height: 270px">
+	<div class="breadcrumb-area-bg" style="background-image: url(/assets-template/images/product-detail/149d5084711t53633l0.jpg); height: 270px"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="inner-content text-center" style="top: -80px">
+					<div class="title">
+						<div style="font-size: 35px; padding: 10px 0; color: white">Chi tiết bài viết</div>
+					</div>
+					<div class="breadcrumb-menu">
+						<ul>
+							<li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+							<li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+							<li><a asp-action="Index" asp-controller="News">Bài viết</a></li>
+							<li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+							<li class="active">Chi tiết bài viết</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="blog-details-area pt-0 pb-0" style="position: relative; top: -50px">
+	<div class="container">
+		<div class="row text-right-rtl">
+			<div class="col-xl-8 col-lg-7">
+				<div class="blog-details-content">
+
+					<div class="single-blog-style1 single-blog-style3">
+						<div class="text-holder">
+							<div class="categories">
+								<h6><i class="fa fa-folder"></i>Loại tin: @Model.appCateNew.Name</h6>
+							</div>
+							<h3 class="blog-title">@Model.Title</h3>
+						</div>
+					</div>
+					<hr />
+					<div class="blog-details-text-1 pt-2">
+						@Html.Raw(Model.Content)
+					</div>
+
+					<div class="blog-prev-next-option p-0">
+						<div class="single-box left">
+							<p><a asp-action="Detail" asp-controller="News" asp-route-id="@(Model.Id == 0 ? Model.Id : (Model.Id-1) )"><span class="icon-right-arrow-1"></span> Bài viết trước</a></p>
+						</div>
+						<div class="single-box right">
+							<p><a asp-action="Detail" asp-controller="News" asp-route-id="@(Model.Id + 1)">Tiếp theo <span class="icon-right-arrow-1"></span></a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-4 col-lg-5">
+				<div class="sidebar-content-box pt-4">
+					<div class="single-sidebar-box mb-2">
+						<div class="border-box" style="background-image: url(~/wwwroot/assets-template/images/shape/zikjak-line-2.png);"></div>
+						<div class="title pb-3">
+							<h3>Bài viết nổi bật</h3>
+							<div class="decor">
+								<img src="~/assets-template/images/shape/decor.png" alt="">
+							</div>
+						</div>
+						<div class="sidebar-blog-post">
+							<ul class="blog-post">
+								@foreach (var item in news)
+								{
+									<li>
+										<div class="inner">
+											<div class="img-box" style="width: 90px; height: 90px; overflow: hidden;">
+												<img src="@item.Path" alt="Awesome Image" style="width: 100%; height: 100%; object-fit: cover;">
+												<div class="overlay-content">
+													<a asp-action="Detail" asp-controller="News" asp-route-id="@item.Id"><i class="fa fa-link" aria-hidden="true"></i></a>
+												</div>
+											</div>
+											<div class="title-box ps-2">
+												<h6 class="mb-1 pt-2"><i class="fa fa-calendar" aria-hidden="true"></i> @item.CreatedDate?.ToString("dd/MM/yy")</h6>
+												<h4>
+													<a asp-action="Detail" asp-controller="News" asp-route-id="@item.Id">
+														@{
+															var maxLength = 35;
+															var displayTitle = item.Title;
+															if (item.Title.Length > maxLength)
+															{
+																var truncatedTitle = item.Title.Substring(0, maxLength);
+																var lastSpaceIndex = truncatedTitle.LastIndexOf(' '); // Tìm vị trí khoảng trắng cuối cùng
+
+																displayTitle = truncatedTitle.Substring(0, lastSpaceIndex) + "..";
+															}
+														}
+														@displayTitle
+													</a>
+												</h4>
+											</div>
+										</div>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+					<div class="single-sidebar-box mb-2">
+						<div class="border-box" style="background-image: url(~/wwwroot/assets-template/images/shape/zikjak-line-2.png);"></div>
+						<div class="title pb-3">
+							<h3>Sản phẫm</h3>
+							<div class="decor">
+								<img src="~/assets-template/images/shape/decor.png" alt="">
+							</div>
+						</div>
+						<ul class="service-pages">
+							@foreach (var item in products)
+							{
+								<div class="d-block">
+									<i class="fas fa-angle-right"></i> <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id" class="p-0 m-0">@item.Name</a>
+								</div>
+							}
+						</ul>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</section>

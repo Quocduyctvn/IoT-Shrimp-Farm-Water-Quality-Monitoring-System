@@ -1,0 +1,117 @@
+﻿@model EcoShrimp.Client.Areas.Client.ViewModels.Account.AccountVM
+
+
+<div class="auth-page-content overflow-hidden  p-0" style="z-index: 0; padding-top: 0">
+	<div class="container" style="z-index: 0;">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card overflow-hidden m-0">
+					<div class="row justify-content-center g-0 ">
+						<div class="col-lg-6" style="background-image: url(/assets-template/images/product-detail/149d5084711t53633l0.jpg);background-size: cover; background-position: center;">
+							<div class="p-lg-5 p-4 auth-one-bg h-100">
+								<div class="bg-overlay"></div>
+								<div class="position-relative h-100 d-flex flex-column">
+									<div class="mb-1 text-center" style="font-size: 35px; color:honeydew">
+										EcoShrimp
+									</div>
+									<div class="mb-4  text-center" style="font-size: 20px; color:honeydew">
+										"Hệ thống quản lý chất lượng nước ao tôm"
+									</div>
+									<div class="mt-auto">
+										<div class="mb-3">
+											<i class="fas fa-quote-right display-4 text-success"></i>
+										</div>
+
+										<div id="qoutescarouselIndicators" class="carousel slide" data-bs-ride="carousel">
+											<div class="carousel-indicators">
+												<button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+												<button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+												<button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+											</div>
+											<div class="carousel-inner text-center text-white pb-5">
+												<div class="carousel-item active">
+													<p class="fs-15 fst-italic">"Giám sát chất lượng nước ao tôm - Bảo vệ môi trường nuôi trồng bền vững"</p>
+												</div>
+												<div class="carousel-item">
+													<p class="fs-15 fst-italic">"Công nghệ hiện đại giúp quản lý ao nuôi hiệu quả hơn"</p>
+												</div>
+												<div class="carousel-item">
+													<p class="fs-15 fst-italic">"Nâng cao năng suất tôm nuôi với hệ thống giám sát thông minh"</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-6">
+							<div class="p-lg-5 p-2">
+								<div class="d-flex flex-column align-items-center">
+									<div class="text-primary text-center h3">Đổi mật khẩu</div>
+									<div class="text-muted text-center">
+										<span><a asp-action="SendCode" style="color: black"><strong>Gửi mã </strong>></a></span>
+										<span><a asp-action="VerifyCode" style="color: black"><strong> Xác thực mã  -></strong></a></span>
+										<span style="color: #f33f3f">Thay đổi mật khẩu</span>
+									</div>
+								</div>
+								<div class="mt-4">
+									<form asp-action="ChangePassword" asp-controller="ClientAccount">
+										<div class="mb-3">
+											<label for="userPassword" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
+											<div class="position-relative">
+												<input type="password" asp-for="Password" class="form-control pe-5" placeholder="***********" required>
+												<i id="togglePassword" class="fas fa-eye-slash" style="color: black; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+												<div class="invalid-feedback">Mật khẩu không được để trống.</div>
+											</div>
+											<span asp-validation-for="Password" class="text-danger"></span>
+										</div>
+
+										<!-- Xác nhận mật khẩu -->
+										<div class="mb-3">
+											<label for="userPassword" class="form-label">Xác nhận mật khẩu <span class="text-danger">*</span></label>
+											<div class="position-relative">
+												<input type="password" asp-for="ConfirmPassword" class="form-control pe-5" placeholder="***********" required>
+												<i id="togglePassword" class="fas fa-eye-slash" style="color: black; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+												<div class="invalid-feedback">Mật khẩu không được để trống.</div>
+											</div>
+											<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+										</div>
+
+										<div class="mt-4">
+											<button class="btn btn-success w-100" type="submit">Đặt lại mật khẩu</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		// Lấy tất cả các biểu tượng "togglePassword"
+		const togglePasswordElements = document.querySelectorAll('#togglePassword');
+
+		togglePasswordElements.forEach(function (icon) {
+			// Gắn sự kiện click cho mỗi biểu tượng mắt
+			icon.addEventListener('click', function () {
+				const input = this.previousElementSibling; // Lấy trường input mật khẩu (được đặt trước icon)
+
+				// Kiểm tra xem input là mật khẩu hay đang hiển thị
+				if (input.type === "password") {
+					input.type = "text"; // Nếu là password, đổi thành text để hiển thị
+					this.classList.remove('fa-eye-slash'); // Thay đổi icon
+					this.classList.add('fa-eye'); // Hiển thị mắt
+				} else {
+					input.type = "password"; // Đổi lại thành password
+					this.classList.remove('fa-eye'); // Thay đổi icon
+					this.classList.add('fa-eye-slash'); // Ẩn mắt
+				}
+			});
+		});
+	});
+</script>
