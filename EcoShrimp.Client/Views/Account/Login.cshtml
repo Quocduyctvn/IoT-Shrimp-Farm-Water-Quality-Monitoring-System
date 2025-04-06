@@ -1,0 +1,154 @@
+﻿@model EcoShrimp.Client.ViewModels.Account.LoginVM
+@{
+    ViewData["Title"] = "Đăng nhập tài khoản";
+}
+
+<div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100" style="background-color: #ebf5f6">
+    <div class="auth-page-content overflow-hidden pt-lg-5 p-0" style="z-index: 0">
+        <div class="container" style="z-index: 0; margin-top: 30px">
+            <div class="row" style="margin-top: 130px">
+				<div class="col-lg-12">
+                    <div class="card overflow-hidden m-0">
+                        <div class="row justify-content-center g-0 ">
+                            <div class="col-lg-6" style="background-image: url(/assets-template/images/product-detail/149d5084711t53633l0.jpg);background-size: cover; background-position: center;">
+                                <div class="p-lg-5 p-4 auth-one-bg h-100" >
+                                    <div class="bg-overlay"></div>
+                                    <div class="position-relative h-100 d-flex flex-column">
+                                        <div class="mb-1 text-center" style="font-size: 35px; color:honeydew">
+                                            EcoShrimp
+                                        </div>
+                                        <div class="mb-4  text-center" style="font-size: 20px; color:honeydew">
+                                            "Hệ thống quản lý chất lượng nước ao tôm"
+                                        </div>
+                                        <div class="mt-auto">
+                                            <div class="mb-3">
+                                                <i class="fas fa-quote-right display-4 text-success"></i>
+                                            </div>
+
+                                            <div id="qoutescarouselIndicators" class="carousel slide" data-bs-ride="carousel">
+                                                <div class="carousel-indicators">
+                                                    <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                                    <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                                    <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                                </div>
+                                                <div class="carousel-inner text-center text-white pb-5">
+                                                    <div class="carousel-item active">
+                                                        <p class="fs-15 fst-italic">"Giám sát chất lượng nước ao tôm - Bảo vệ môi trường nuôi trồng bền vững"</p>
+                                                    </div>
+                                                    <div class="carousel-item">
+                                                        <p class="fs-15 fst-italic">"Công nghệ hiện đại giúp quản lý ao nuôi hiệu quả hơn"</p>
+                                                    </div>
+                                                    <div class="carousel-item">
+                                                        <p class="fs-15 fst-italic">"Nâng cao năng suất tôm nuôi với hệ thống giám sát thông minh"</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="p-lg-5 p-2">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="text-primary text-center h3">Đăng nhập vào hệ thống</div>
+                                        <div class="text-muted text-center">
+                                            "Quản lý và kiểm soát chất lượng nước ao tôm một cách chính xác, giúp giảm thiểu rủi ro và nâng cao hiệu quả nuôi trồng." </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <form asp-action="Login" asp-controller="Account" id="loginForm">
+                                            <!-- Số điện thoại -->
+                                            <div class="mb-3">
+                                                <label for="phoneNumber" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                                <input asp-for="Phone" type="text" id="phoneNumber" class="form-control" placeholder="Nhập Số điện thoại" style="padding-left: 0" required>
+                                                <div class="invalid-feedback">Số điện thoại không hợp lệ. Vui lòng nhập từ 10 đến 11 chữ số.</div>
+                                            </div>
+
+                                            <!-- Mật khẩu -->
+                                            <div class="mb-3">
+                                                <label for="userPassword" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
+                                                <div class="position-relative">
+                                                    <input asp-for="Pass" type="password" id="userPassword" class="form-control pe-5" style="padding-left: 0" placeholder="***********" required>
+                                                    <i id="togglePassword" class="fas fa-eye-slash" style="color: black; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                                    <div class="invalid-feedback">Mật khẩu không được để trống.</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-4">
+                                                <button class="btn btn-success w-100" type="submit">Đăng nhập</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Chức năng kiểm tra form khi submit
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        // Lấy các trường
+        const phoneField = document.getElementById("phoneNumber");
+        const passwordField = document.getElementById("userPassword");
+
+        // Kiểm tra nếu các trường không hợp lệ
+        let formValid = true;
+
+        // Kiểm tra số điện thoại (ràng buộc độ dài từ 10 đến 11 ký tự và chỉ chứa số)
+        const phonePattern = /^\d{10,11}$/;  // Kiểm tra nếu là số và có độ dài từ 10-11
+        if (!phonePattern.test(phoneField.value.trim())) {
+            phoneField.classList.add("is-invalid");
+            formValid = false;
+        } else {
+            phoneField.classList.remove("is-invalid");
+        }
+
+        // Kiểm tra mật khẩu
+        if (!passwordField.value.trim()) {
+            passwordField.classList.add("is-invalid");
+            formValid = false;
+        } else {
+            passwordField.classList.remove("is-invalid");
+        }
+
+        // Nếu form không hợp lệ, ngừng việc submit
+        if (!formValid) {
+            event.preventDefault();
+        }
+    });
+
+    // Chức năng xem mật khẩu
+    document.getElementById("togglePassword").addEventListener("click", function() {
+        const passwordField = document.getElementById("userPassword");
+        const icon = document.getElementById("togglePassword");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        } else {
+            passwordField.type = "password";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        }
+    });
+</script>
+<script src="~/asset/js/layout.js"></script>
+<!-- Bootstrap Css -->
+<link href="~/asset/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<!-- Icons Css -->
+<link href="~/asset/css/icons.min.css" rel="stylesheet" type="text/css" />
+<!-- App Css-->
+<!-- custom Css-->
+<link href="~/asset/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+
+<!-- validation init -->
+<script src="~/asset/js/pages/form-validation.init.js"></script>
+<!-- password create init -->
+<script src="~/asset/js/pages/passowrd-create.init.js"></script>

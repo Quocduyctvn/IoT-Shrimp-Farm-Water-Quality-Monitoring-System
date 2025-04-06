@@ -1,0 +1,377 @@
+﻿@using EcoShrimp.Client.Areas.Client.ViewModels.Connect
+@using EcoShrimp.Client.Areas.Client.ViewModels.Pond
+@using EcoShrimp.Client.Areas.Client.ViewModels.Season
+@using EcoShrimp.Data.Entities
+@using EcoShrimp.Share.Enums
+@model EcoShrimp.Data.Entities.AppFarms
+
+@{
+	int stt = 1;
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<link href="~/asset/css/loading.css" rel="stylesheet" />
+<style>
+	.arrow {
+		transition: transform 0.3s ease;
+	}
+
+	.collapse.show .arrow {
+		transform: rotate(180deg); /* Quay mũi tên lên khi mở */
+	}
+
+	.pointer:hover {
+		cursor: pointer;
+	}
+
+	/* //----------------------------------------------- */
+	.rotate {
+		transition: transform 0.5s ease-in-out;
+		transform: rotate(180deg);
+	}
+
+</style>
+<style>
+	/* The toggle switch container */
+	.toggle-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 50px;
+	}
+
+	/* The actual switch */
+	.toggle {
+		position: relative;
+		display: inline-block;
+		width: 50px; /* Smaller width */
+		height: 24px; /* Smaller height */
+	}
+
+		/* Hide the default checkbox */
+		.toggle input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+	/* The slider (background) */
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ccc;
+		transition: 0.4s;
+		border-radius: 34px;
+	}
+
+		/* The slider circle (knob) */
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 16px; /* Smaller knob */
+			width: 16px; /* Smaller knob */
+			border-radius: 50%;
+			left: 4px;
+			bottom: 4px;
+			background-color: white;
+			transition: 0.4s;
+		}
+
+	/* When the checkbox is checked, move the slider knob */
+	input:checked + .slider {
+		background-color: #4CAF50;
+	}
+
+		input:checked + .slider:before {
+			transform: translateX(28px); /* Adjust the knob position */
+		}
+
+	.breadcrumb-area-bg {
+		background-image: url(/assets-template/images/slides/slide-v1-1.jpg);
+		background-repeat: no-repeat;
+		background-size: 100% auto; /* Đảm bảo ảnh luôn phủ chiều rộng mà không vỡ */
+		background-position: center top;
+		height: 210px;
+		border-radius: 10px 10px 5px 5px;
+	}
+
+</style>
+<section class="breadcrumb-area pb-0">
+	<div class="breadcrumb-area-bg" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+		<div class="container text-center" style="position: absolute; top: 60px; z-index: 20">
+			<h4 class="mx-1">Trang trại: @Model.FarmName</h4>
+			<div>Khách hàng: @Model.OwnerName - @Model.Phone</div>
+			<div>
+				Địa chỉ:
+				@{
+					var addressParts = new List<string>();
+
+					if (!string.IsNullOrWhiteSpace(Model.NumberHouse)) addressParts.Add(Model.NumberHouse);
+					if (!string.IsNullOrWhiteSpace(Model.Ward)) addressParts.Add(Model.Ward);
+					if (!string.IsNullOrWhiteSpace(Model.District)) addressParts.Add(Model.District);
+					if (!string.IsNullOrWhiteSpace(Model.City)) addressParts.Add(Model.City);
+				}
+				@if (addressParts.Any())
+				{
+					<span>@string.Join(" - ", addressParts)</span>
+				}
+			</div>
+			<div><i>Ngày đăng ký hệ thống: @Model.CreatedDate?.ToString("dd-MM-yyyy")</i></div>
+
+		</div>
+
+		<!-- Đặt ảnh bên dưới chữ -->
+		<div style="position: absolute; top: -20px; right: -40px">
+			<img src="~/assets/images/shrimp/may-khongnen.png" data-aos="fade-up" data-aos-delay="100" width="360px" />
+		</div>
+	</div>
+
+
+	<div style="position: absolute; left: 35px; top: 120px">
+		<img src="~/assets/images/shrimp/shrimp1-khongnen.png" data-aos="zoom-in" data-aos-delay="700" width="300px" />
+	</div>
+
+	<div style="position: absolute; right: 50px; top: 110px">
+		<img src="~/assets/images/shrimp/shrimp2-khongnen.png" data-aos="flip-right" data-aos-delay="700" width="250px" />
+	</div>
+</section>
+
+
+<div class="col p-0 mt-2">
+	<div class="sub-title pb-0">
+		<h5 style="font-size: 25px; color: #004da1" class="mb-0">
+			Vuông/Ao:
+		</h5>
+	</div>
+	<div class="decor m-0 p-0">
+		<img src="assets-template/images/shape/decor.png" class="m-0 p-0" alt="">
+	</div>
+</div>
+
+
+<div class="accordion mt-3" id="accordionExample" style="margin-bottom: 70px">
+	@foreach (var item in Model.appPonds.Where(x => x.Status == Status.Active))
+	{
+		var temp = "collapse" + @item.Id;
+		<div class="accordion-item" style="margin: 10px 0; box-shadow: 4px 8px 10px rgba(230, 239, 248, 2);">
+			<h2 class="accordion-header">
+				<button class="accordion-button collapsed text-black" type="button" data-bs-toggle="collapse" data-bs-target="#@temp" aria-expanded="false" aria-controls="@temp">
+					@item.Name
+					@if (item.appSeasons.Any(x => x.Status == Status.Active))
+					{
+						<span class="text-success"> - [Đang hoạt động]</span>
+					}
+					else
+					{
+						<span class="text-warning"> - [Tạm ngưng]</span>
+					}
+				</button>
+			</h2>
+			<div id="@temp" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+				<div class="accordion-body mt-1" style="padding: 0 0 30px 0;  display: flex; flex-direction: column; align-items: center; justify-content: center;">
+					@{
+						// lấy mùa vụ đang hoạt động
+						var season = item.appSeasons.FirstOrDefault(x => x.Status == Status.Active);
+					}
+					@if (season != null)
+					{
+						<div class="row w-100 px-3 mt-0 d-flex justify-content-center">
+							<div class="col-12 " style="padding:10px 0">
+								<p class="mb-1" style="cursor: pointer">
+									<span onclick="UpdateSeason('@season.Id', '@season.Name', '@season.Density', '@season.StartDate', '@season.EndDate', '@season.Desc')">
+										Đợt nuôi: <i>@season?.Name</i>
+										<i class="fas fa-info-circle text-primary"></i>
+									</span>
+								</p>
+
+								<p class="mb-1">
+									Thời gian:
+									<i>
+										@item.appSeasons.FirstOrDefault(x => x.Status == Status.Active)?.CreatedDate?.ToString("dd/MM/yyyy") ->
+										Dự kiến:
+										@(
+																	@item.appSeasons.FirstOrDefault(x => x.Status == Status.Active)?.EndDate != null ?
+																	@item.appSeasons.FirstOrDefault(x => x.Status == Status.Active)?.EndDate?.ToString("dd/MM/yyyy")
+																	: "null"
+														)
+									</i>
+									<i class="text-primary" style="cursor: pointer" onclick="EndSeason('@season.Id', '@season.Name')">[Kết thúc đợt nuôi]</i>
+								</p>
+							</div>
+							@foreach (var connect_item in season.appConnects.Where(x => x.Status == ConnectStatus.Connected).ToList())
+							{
+								<div class="col-xl-3 col-md-6">
+									<div class="card text-white mb-4 pt-4">
+										<div class="row mt-1 ms-1 text-light" style="background-image: url(/assets/images/Shrimp/sensor01.png);  height: 150px; width: 100%;  background-size: contain;  background-repeat: no-repeat; background-position: center;">
+										</div>
+										<div class="row w-100 mt-1 ms-1 text-primary">
+											<div class="col p-0 ps-3 text-center" style="cursor: pointer"
+												 onclick="InforConect('@connect_item.Id', '@season.Name', '@connect_item.appProInstances.Name', '@connect_item.StartDate.ToString("yyyy-MM-dd HH:mm:ss")')">
+												<span class="fw-bold p-0">@connect_item.appProInstances.Name</span>
+												<i class="fas fa-info-circle text-secondary"></i>
+											</div>
+										</div>
+										<a asp-action="Detail" asp-controller="ClientHome" asp-route-id="@connect_item.Id" class="text-decoration-none">
+											<div class="row w-100 ms-0 mt-3 justify-content-center  text-light py-2" style="background-color: #95dddd">
+												<div class="col-auto p-0 mx-auto">Xêm thêm <i class="fas fa-arrow-circle-right"></i></div>
+											</div>
+										</a>
+									</div>
+								</div>
+							}
+						</div>
+
+						<div class="row" style="width: 100%">
+							<div class="toggle-container mt-0">
+								<p class="mb-0"> <i class="fas fa-broadcast-tower"></i> Dò thêm thiết bị</p>
+								<label class="toggle ms-2 mt-2">
+									<input type="checkbox" id="deviceToggle_@season.Id">
+									<span class="slider"></span>
+								</label>
+							</div>
+
+							<!-- Loading Spinner -->
+							<div class="load-7 row w-100 mb-2" id="loadingIndicator_@season.Id" style="display: none; justify-content: center; width: 100%; height: auto">
+								<div class="square-holder row w-100" style="justify-content: center;">
+									<div class="square"></div>
+								</div>
+							</div>
+						</div>
+						<!-- Hiển thị kết quả -->
+						<div class="result-container row" style="width: 100%">
+						</div>
+					}
+					@if (!item.appSeasons.Any(x => x.Status == Status.Active))
+					{
+						<span onclick="CreateSeason(@item.Id)" class="pointer text-primary mt-4">
+							Thêm đợt nuôi cho Vuông để bắt đầu theo dõi thông số môi trường ngay!!
+						</span>
+					}
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+<script>
+	function CreateSeason() {
+		let icon = document.getElementById("seasonIcon");
+		let options = document.getElementById("seasonOptions");
+
+		console.log(icon, options); // Kiểm tra xem các phần tử có tồn tại không
+		alert("clicked");
+
+		if (!icon || !options) {
+			console.error("Không tìm thấy phần tử seasonIcon hoặc seasonOptions!");
+			return;
+		}
+
+		// Thêm class xoay tròn cho icon
+		icon.classList.add("rotate");
+
+		// Hiển thị hoặc ẩn danh sách tùy chọn
+		options.classList.toggle("d-none");
+
+		// Dừng xoay sau 0.5s
+		setTimeout(() => {
+			icon.classList.remove("rotate");
+		}, 500);
+	}
+
+
+	function openModal(id, name, seasonid) {
+		document.getElementById('modalDeviceId').value = id;
+		document.getElementById('modalDeviceName').value = name;
+		document.getElementById('modalDeviceSeasonId').value = seasonid;
+		let modal = new bootstrap.Modal(document.getElementById('deviceModal'));
+		console.log(id)
+		console.log(seasonid)
+		modal.show();
+	}
+
+
+	document.querySelectorAll('.toggle input').forEach(toggle => {
+		toggle.addEventListener('change', async function () {
+			var loadingIndicator = this.closest('.accordion-body').querySelector('.load-7');
+			var toggleContainer = this.closest('.accordion-body').querySelector('.toggle-container');
+			var resultContainer = this.closest('.accordion-body').querySelector('.result-container');
+
+			if (this.checked) {
+				var seasonId = this.id.replace('deviceToggle_', '');
+				console.log(seasonId);
+
+				toggleContainer.style.display = 'none';
+				loadingIndicator.style.display = 'block';
+
+				try {
+					let response = await fetch(`https://localhost:44304/client/ClientHome/GetDevice/${seasonId}`);
+					if (!response.ok) throw new Error('Lỗi lấy dữ liệu');
+
+					let devices = await response.json();
+					let html = '<ul style="list-style: none">';
+
+					devices.forEach((device, index) => {
+						let iconClass = device.desc === "Not-Config" ? "fa-exclamation-circle text-warning"
+									  : (device.desc === "Connect" ? "fa-plus-circle text-success"
+									  : "fa-times-circle text-danger");
+
+						let descText = device.desc === "Not-Config" ? "Chưa được cấu hình"
+									  : (device.desc === "Connect" ? "Đang kết nối Wifi" : "Không kết nối wifi");
+
+						// Tạo HTML cho phần tử
+						html += `<li style="padding:15px 10px;margin: 10px 0; background-color: #e5ede6; border-radius: 4px; display: flex; justify-content: space-between; cursor: ${device.desc === "Connect" ? "pointer" : "default"};"
+								  class="${device.desc === "Connect" ? "open-modal" : ""} fade-in-device"
+								  data-id="${device.id}" data-name="${device.name}" data-seasonId="${seasonId}">
+								  <span>${device.name}</span>
+								  <span>${descText} <i class="me-2 fas ${iconClass}"></i></span>
+								</li>`;
+
+						// Tạo hiệu ứng từ từ sau 100ms (hoặc bất kỳ thời gian nào bạn muốn)
+						setTimeout(() => {
+							const elements = document.querySelectorAll('.fade-in-device');
+							elements[index].classList.add('fade-in-device');
+						}, 1000 * index); // Điều chỉnh thời gian để các phần tử hiện lên từ từ
+					});
+
+
+					html += "</ul>";
+					resultContainer.innerHTML = html;
+
+					// Thêm sự kiện click cho những <li> có thể sử dụng
+					document.querySelectorAll('.open-modal').forEach(item => {
+						item.addEventListener('click', function () {
+							let id = this.getAttribute('data-id');
+							let name = this.getAttribute('data-name');
+							let seasonid = this.getAttribute('data-seasonId');
+							openModal(id, name, seasonid);
+						});
+					});
+
+				} catch (error) {
+					resultContainer.innerHTML = `<p style="color: red;">Lỗi tải dữ liệu</p>`;
+				}
+
+				setTimeout(() => {
+					loadingIndicator.style.display = 'none';
+					toggleContainer.style.display = 'flex';
+				}, 3000);
+			} else {
+				loadingIndicator.style.display = 'none';
+				resultContainer.innerHTML = "";
+				toggleContainer.style.display = 'flex';
+			}
+		});
+	});
+</script>
+
+
+@await Html.PartialAsync("_Connect", new ConnectVM())
+
+@await Html.PartialAsync("_CreateSeason", new SeasonVM())
+@await Html.PartialAsync("_UpdateSeason", new SeasonVM())
+@await Html.PartialAsync("_EndSeason")
+@await Html.PartialAsync("_InforConect")

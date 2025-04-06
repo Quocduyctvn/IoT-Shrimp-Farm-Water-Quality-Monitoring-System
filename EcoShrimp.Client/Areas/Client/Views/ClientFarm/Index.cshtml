@@ -1,0 +1,391 @@
+﻿@using EcoShrimp.Data.Entities
+@model EcoShrimp.Client.Areas.Client.ViewModels.Farm.FarmVM
+
+@{
+	int stt = 1;
+	var proInstans = TempData["proInstans"] as List<AppProInstances>;
+	var times = TempData["times"] as List<AppTimeIntervals>;
+}
+
+<form asp-action="Index" method="post" enctype="multipart/form-data">
+	<div class="row fs-4 pt-2 align-items-center">
+		<div class="col-auto">
+			<span class="" style="font-size: 25px">Thông tin trạng trại  </span>
+		</div>
+		<div class="col  d-flex justify-content-end">
+			<button type="submit" class="btn btn-primary js-btn-import" style="margin-left: 10px">
+				<i class="far fa-edit"></i> &nbsp; Cập nhật
+			</button>
+		</div>
+	</div>
+	<hr />
+
+	<div class="row">
+		<div class="col-sm-6 pe-3">
+			<div class="row g-3">
+				<div class="col " style="padding-left: 0">
+					<input asp-for="Id" class="d-none" />
+					<label class="control-label">Tên trang trại:<span style="color: red;">*</span></label>
+					<input asp-for="FarmName" class="form-control" style="border-radius: 0px; height: 32px" />
+					<span asp-validation-for="FarmName" class="text-danger"></span>
+				</div>
+				<div class="col " style="padding-left: 0">
+					<label class="control-label">Tên chủ trang trại:<span style="color: red;">*</span></label>
+					<input asp-for="OwnerName" class="form-control" style="border-radius: 0px; height: 32px" />
+					<span asp-validation-for="OwnerName" class="text-danger"></span>
+				</div>
+			</div>
+			@* Hình ảnh *@
+			<div class="row" style="margin-top: 4px">
+				<div class="col-4 p-0 ms-2">
+					<label class="control-label m-0">Ảnh đại diện:</label>
+					<div class="row w-100 position-relative" onmouseover="this.style.cursor='pointer';">
+						<div class="col p-0 mt-2 mx-3" style="opacity: 1;">
+							<div class="row text-center justify-content-center align-items-center"
+								 style="border: dotted 2px rgb(139, 139, 139); height: 176px; position: relative;">
+								<i class="fas fa-cloud-upload-alt" style="font-size: 50px; color: rgb(10, 176, 202)"></i>
+								@if (!string.IsNullOrEmpty(Model.Avatar))
+								{
+									<img class="img-preview position-absolute" src="@Model.Avatar"
+										 style="width: 100%; height: 100%; object-fit: cover;" />
+									<i class="fas fa-times-circle remove-image position-absolute"
+									   style="top: -15px; right: -15px; color: red; cursor: pointer; display: none; font-size: 25px"></i>
+								}
+								else
+								{
+									<img class="img-preview position-absolute d-block"
+										 style="width: 100%; height: 100%; object-fit: cover;" />
+								}
+							</div>
+						</div>
+						<div class="col p-0 mt-2 mx-3 position-absolute" style="opacity: 0;">
+							<input data-preview="0" id="fileInput" class="file-input" asp-for="FormFile" type="file"
+								   style="height: 176px; width: auto; " accept="image/*" />
+						</div>
+					</div>
+					<span class="fs-6 text-success position-relative" asp-validation-for="FormFile" style="left: -10px;" id="labelImgPost"></span>
+				</div>
+				<div class="col">
+					<label class="control-label">Mô tả ngắn:</label>
+					<textarea asp-for="Desc" class="form-control" style="border-radius: 0px; height: 176px"></textarea>
+					<span asp-validation-for="Desc" class="text-danger"></span>
+				</div>
+				<span asp-validation-for="FormFile" class="text-danger"></span>
+			</div>
+
+
+		</div>
+		<div class="col-sm-6 " style="padding:0 0 0 25px;">
+			<div class="form-group m-0 pb-2">
+				<div class="row g-3">
+					<div class="col-6">
+						<label class="control-label">Số điện thoại:<span style="color: red;">*</span></label>
+						<input asp-for="Phone" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="Phone" class="text-danger"></span>
+					</div>
+					<div class="col-6">
+						<label class="control-label">Email:</label>
+						<input asp-for="Email" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="Email" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="row g-3 mt-1">
+					<div class="col position-relative">
+						<label class="control-label">Mật khẩu đăng nhập:<span style="color: red;">*</span></label>
+						<div class="input-group">
+							<input asp-for="PassWord" id="passwordInput" value="*Shrimp123*" readonly class="form-control" type="password" style="border-radius: 0px; height: 32px" />
+						</div>
+						<span asp-validation-for="PassWord" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="row g-3">
+					<div class="col-6">
+						<label class="control-label">Thành phố:</label>
+						<select id="provinces" asp-for="City" class="form-control rounded-1 w-100 border border-2 border-none px-4">
+							<option value="0"> -- Chọn thành phố -- </option>
+						</select>
+						<span asp-validation-for="City" class="text-danger"></span>
+					</div>
+					<div class="col-6">
+						<label class="control-label">Quận/Huyện:</label>
+						<select id="districts" asp-for="District" class="form-control rounded-1 w-100 border border-2 border-none px-4">
+							<option value="0"> -- Chọn quận/huyện -- </option>
+						</select>
+						<span asp-validation-for="District" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="row g-3">
+					<div class="col-6">
+						<label class="control-label">Xã/phường:</label>
+						<select id="wards" asp-for="Ward" class="form-control rounded-1 w-100 border border-2 border-none px-4">
+							<option value="0"> -- Chọn xã/phường -- </option>
+						</select>
+						<span asp-validation-for="Ward" class="text-danger"></span>
+					</div>
+					<div class="col-6">
+						<label class="control-label">Số nhà:</label>
+						<input asp-for="NumberHouse" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="NumberHouse" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 p-0">
+			<div class="image-preview-container form-group" id="images">
+			</div>
+		</div>
+	</div>
+</form>
+
+<div class="mt-3">
+	<div class="row fs-4 pt-2 align-items-center">
+		<div class="col-md-3 p-0 mb-1 pt-1" style="border-top: 2px solid #a55d0799;">
+			<span class="" style="font-size: 19px">Thiết lặp khoảng cách điểm biểu đồ</span>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col p-0">
+			<div class="col-md-3 p-0 d-flex flex-column">
+				<select id="filter-month" class="form-control" data-farm-id="@Model.Id" onchange="updateTimeFarm(this)">
+					@foreach (var item in times)
+					{
+						if (Model.IdTime == item.Id)
+						{
+							<option value="@item.Id" selected data-value="@item.Value">@item.Label</option>
+						}
+						else
+						{
+							<option value="@item.Id" data-value="@item.Value">@item.Label</option>
+						}
+					}
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="mt-3" style="border-top: 2px solid #a55d0799;">
+	<div class="row fs-4 pt-2 align-items-center">
+		<div class="col-auto">
+			<span class="" style="font-size: 20px">Thông tin thiết bị</span>
+		</div>
+	</div>
+	<hr class="mt-1" />
+
+	<div class="row">
+		<div class="col pe-3">
+			@foreach (var item in proInstans)
+			{
+				<form asp-action="UpdateDevice" method="post" enctype="multipart/form-data">
+					<div class="row g-3 align-items-center mb-3">
+						<div class="col-auto">
+							@stt .
+						</div>
+						<div class="col-7">
+							<input asp-for="@item.Id" name="Id" value="@item.Id" class="d-none" />
+
+							<!-- Chế độ hiển thị tên -->
+							<span class="name-text">@item.Name</span>
+
+							<!-- Chế độ chỉnh sửa -->
+							<input asp-for="@item.Name" value="@item.Name" name="Name" class="form-control name-input d-none" style="border-radius: 0px; height: 32px;" />
+
+							<span asp-validation-for="FarmName" class="text-danger"></span>
+						</div>
+						<div class="col d-flex justify-content-end">
+							<!-- Nút sửa -->
+							<button type="button" class="btn btn-primary edit-btn">
+								<i class="far fa-edit"></i>
+							</button>
+
+							<button type="submit" class="btn btn-success save-btn d-none">
+								<i class="far fa-edit"></i> Cập nhật
+							</button>
+						</div>
+					</div>
+				</form>
+				stt++;
+			}
+		</div>
+	</div>
+</div>
+
+<style>
+	.image-preview-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px; /* Khoảng cách giữa các ảnh */
+		margin-top: 10px;
+		display: none;
+	}
+
+		.image-preview-container .image-box {
+			position: relative;
+			width: 100px;
+			height: 100px;
+		}
+
+		.image-preview-container img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 5px;
+		}
+
+		.image-preview-container .remove-btn {
+			position: absolute;
+			top: -5px;
+			right: -5px;
+			color: red;
+			cursor: pointer;
+			font-size: 18px;
+		}
+</style>
+
+<script>
+	function updateTimeFarm(selectElement) {
+		var selectedId = selectElement.value;
+		 var farmId = selectElement.getAttribute("data-farm-id");
+
+		var requestData = { IdFarm: farmId, IdTime: selectedId };
+
+		console.log("Dữ liệu gửi lên:", requestData); // ✅ Kiểm tra dữ liệu trước khi gửi
+
+		$.ajax({
+			url: "/ClientFarm/UpdateIdTime",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(requestData),
+			success: function(response) {
+				console.log("Cập nhật thành công:", response);
+				window.location.reload();
+			},
+			error: function(error) {
+				console.error("Lỗi khi cập nhật!", error);
+			}
+		});
+	}
+</script>
+<script>
+
+	function togglePassword() {
+		var passwordInput = document.getElementById("passwordInput");
+		var eyeIcon = document.getElementById("eyeIcon");
+
+		if (passwordInput.type === "password") {
+			passwordInput.type = "text";
+			eyeIcon.classList.remove("fa-eye");
+			eyeIcon.classList.add("fa-eye-slash");
+		} else {
+			passwordInput.type = "password";
+			eyeIcon.classList.remove("fa-eye-slash");
+			eyeIcon.classList.add("fa-eye");
+		}
+	}
+
+
+	document.addEventListener("DOMContentLoaded", function () {
+		document.querySelectorAll(".edit-btn").forEach(function (btn) {
+			btn.addEventListener("click", function () {
+				let row = this.closest(".row");
+
+				// Ẩn text, hiển thị input và nút xác nhận
+				row.querySelector(".name-text").classList.add("d-none");
+				row.querySelector(".name-input").classList.remove("d-none");
+				row.querySelector(".edit-btn").classList.add("d-none");
+				row.querySelector(".save-btn").classList.remove("d-none");
+			});
+		});
+	});
+
+
+	document.addEventListener("DOMContentLoaded", function () {
+		// Load danh sách Tỉnh/Thành phố
+		fetch("https://api.mysupership.vn/v1/partner/areas/province")
+			.then(response => response.json())
+			.then(data => {
+				var provinces = document.getElementById("provinces");
+				// Xóa tất cả các option hiện có trước khi thêm mới
+				provinces.innerHTML = "";
+				// Thêm option mặc định nếu không có dữ liệu từ Model
+				if (provinces.options.length === 0) {
+					var defaultOption = document.createElement("option");
+					defaultOption.value = "0";
+					defaultOption.text = " -- Chọn thành phố -- ";
+					provinces.appendChild(defaultOption);
+				}
+				// Thêm dữ liệu từ API vào select box
+				data.results.forEach(province => {
+					var option = document.createElement("option");
+					option.data = province.code;
+					option.value = province.name;
+					option.text = province.name;
+					if (province.name === "@Html.Raw(Model.City)") {
+						option.selected = true;
+					}
+					provinces.appendChild(option);
+					if (true) { provinces.dispatchEvent(new Event("change")); }
+				});
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+
+		// Cập nhật các select box khác khi thành phố được chọn
+		document.getElementById("provinces").addEventListener("change", event => {
+			var selectedIndex = event.target.selectedIndex;
+			var tp = event.target.options[selectedIndex].data;
+
+			fetch(`https://api.mysupership.vn/v1/partner/areas/district?province=${tp}`)
+				.then(res => res.json())
+				.then(data => {
+					var districts = document.getElementById("districts");
+					districts.innerHTML = "<option value='0'> -- Chọn quận/huyện -- </option>";
+					data.results.forEach(district => {
+						var option = document.createElement("option");
+						option.data = district.code;
+						option.value = district.name;
+						option.text = district.name;
+						if (district.name === "@Html.Raw(Model.District)") {
+							option.selected = true;
+						}
+						districts.appendChild(option);
+					});
+					if (true) { districts.dispatchEvent(new Event("change")); }
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		});
+
+		// Cập nhật xã/phường khi quận/huyện được chọn
+		document.getElementById("districts").addEventListener("change", event => {
+			var selectedIndex = event.target.selectedIndex;
+			var districtCode = event.target.options[selectedIndex].data;
+			fetch(`https://api.mysupership.vn/v1/partner/areas/commune?district=${districtCode}`)
+				.then(res => res.json())
+				.then(data => {
+					var wards = document.getElementById("wards");
+					wards.innerHTML = "<option value='0'> -- Chọn xã/phường -- </option>";
+					data.results.forEach(ward => {
+						var option = document.createElement("option");
+						option.data = ward.code;
+						option.value = ward.name;
+						option.text = ward.name;
+						if (ward.name === "@Html.Raw(Model.Ward)") {
+							option.selected = true;
+						}
+						wards.appendChild(option);
+						if (true) { provinces.dispatchEvent(new Event("change"));}
+					});
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		});
+	});
+</script>

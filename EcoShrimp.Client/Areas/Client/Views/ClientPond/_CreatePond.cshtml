@@ -1,0 +1,82 @@
+﻿@model EcoShrimp.Client.Areas.Client.ViewModels.Pond.PondVM
+
+
+<div class="modal fade" id="CreatePond" tabindex="-1" role="dialog" aria-labelledby="CreatePondLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 700px">
+            <form asp-action="Create" asp-controller="ClientPond" id="CreatePondForm" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title fs-6" id="CreatePondLabel">Thêm mới Vuông nuôi</h4>
+                    <button type="button" class="close" onclick="CloseModalCreate()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding-top: 0px">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-end" style="margin-top: 7px">
+                            <span style="font-size: 12px;">Ngày tạo: @DateTime.Now.ToString("dd/MM/yy")</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="py-2">Tên vuông: <span style="color: red;">*</span></div>
+                            <input type="text" asp-for="Name" class="form-control" placeholder="vd: Vuông A01" />
+                            <span asp-validation-for="Name" id="NameError" class="text-danger"></span>
+                        </div>
+                        <div class="col-3">
+                            <div class="py-2">Diện tích vuông/m²: </div>
+                            <input type="text" asp-for="Area" class="form-control" placeholder="vd: 200" />
+                            <span asp-validation-for="Area" id="NameError" class="text-danger"></span>
+                        </div>
+                        <div class="col-4">
+                            <div class="py-2">Vị trí ao: </div>
+                            <input type="text" asp-for="Address" class="form-control" placeholder="vd: Ao gần Kho Thức Ăn" />
+                            <span asp-validation-for="Address" id="NameError" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <div class="py-2">Mô tả: </div>
+                            <textarea class="form-control" asp-for="Desc" rows="4" height="80px"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="CloseModalCreate()">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+        // Hàm kiểm tra validate
+    function validateForm(event) {
+        let isValid = true;
+
+        // Lấy giá trị của các trường
+        let name = document.getElementById('Name').value.trim();
+
+        // Kiểm tra trường 'Tên loại'
+        if (name === "") {
+            document.getElementById('NameError').innerText = "Thuộc tính là bắt buột.";
+            isValid = false;
+        } else {
+            document.getElementById('NameError').innerText = "";
+        }
+
+
+        // Nếu không hợp lệ, ngừng submit form
+        if (!isValid) {
+            event.preventDefault();
+        }
+    }
+
+    // Lắng nghe sự kiện submit của form
+    document.getElementById('CreateCateForm').addEventListener('submit', validateForm);
+</script>
+
+<script type="text/javascript">
+    function CloseModalCreate() {
+        $('#CreatePond').modal('hide');
+        console.log("clicked");
+    }
+</script>

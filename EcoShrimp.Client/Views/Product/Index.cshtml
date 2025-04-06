@@ -1,0 +1,157 @@
+﻿@using EcoShrimp.Data.Entities
+@model X.PagedList.PagedList<EcoShrimp.Data.Entities.AppProducts>
+@{
+	var products = TempData["Products"] as List<AppProducts>;
+}
+<section class="breadcrumb-area pb-0">
+	<div class="breadcrumb-area-bg" style="background-image: url(/assets-template/images/product-detail/149d5084711t53633l0.jpg); height: 270px"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="inner-content text-center" style="top: -80px">
+					<div class="title">
+						<div style="font-size: 35px; padding: 10px 0; color: white">Danh sách sản phẫm</div>
+					</div>
+					<div class="breadcrumb-menu">
+						<ul>
+							<li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+							<li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+							<li class="active">Sản phẫm</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="service-style1-area service-page-sec1 pt-0">
+	<div class="service-page-sec1-bg" style="background-image: url(assets-template/images/pattern/service-page-sec1-bg.png);"></div>
+	<div class="container">
+		<div class="sec-title pb-1 row d-flex justify-content-between">
+			<!-- Phần tử bên trái -->
+			<div class="col ">
+				<div class="sub-title pb-0">
+					<h5 style="font-size: 25px; color: #004da1">
+						Sản phẩm của chúng tôi.
+					</h5>
+				</div>
+				<div class="decor m-0 p-0">
+					<img src="assets-template/images/shape/decor.png" class="m-0 p-0" alt="">
+				</div>
+			</div>
+
+			<!-- Phần tử bên phải -->
+			<div class="col d-flex justify-content-end">
+				<div class="serach-button-style1">
+					<button type="button" class="search-toggler"><i class="icon-search"></i></button>
+				</div>
+			</div>
+		</div>
+
+		@if (TempData["searched"] != null && !string.IsNullOrEmpty(TempData["searched"]!.ToString()))
+		{
+			<div class="text-center">
+				<span class="text-danger"><i>Kết quả tìm kiếm [@Model.Count()] danh mục </i></span> <a asp-action="Index" class="text-decoration-none text-center" style="display: inline-block">Đặt lại</a>
+			</div>
+		}
+		<div class="row mt-3">
+			@foreach (var item in Model)
+			{
+				<div class="col-xl-4 col-lg-4">
+					<div class="single-service-style1 text-center">
+						<div class="single-service-style1__bg" style="background-image: url(assets-template/images/shape/single-service-box-bg-2.png);"></div>
+						<div class="img-holder">
+							<div class="inner">
+								<img src="@item.appImges.FirstOrDefault()?.Path" alt="">
+							</div>
+							<div class="overlay-icon">
+								<a href="#"><span class="icon-water-dispenser"></span></a>
+							</div>
+						</div>
+						<div class="title-holder">
+							<h3>
+								<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id">
+									@{
+										var maxLength = 30;
+										var displayTitle = item.Name;
+										if (item.Name.Length > maxLength)
+										{
+											var truncatedTitle = item.Name.Substring(0, maxLength);
+											var lastSpaceIndex = truncatedTitle.LastIndexOf(' '); // Tìm vị trí khoảng trắng cuối cùng
+
+											displayTitle = truncatedTitle.Substring(0, lastSpaceIndex) + "..";
+										}
+									}
+									@displayTitle
+								</a>
+							</h3>
+							<div class="inner-text">
+								<p>@(item.Summary.Length > 60 ? item.Summary.Substring(0, 60) + "..." : item.Summary)</p>
+							</div>
+							<div class="readmore-button">
+								<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id"><span class="icon-right-arrow"></span>Xem thêm</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+		@if (TempData["searched"] != null && !string.IsNullOrEmpty(TempData["searched"]!.ToString()))
+		{
+			<div class="text-start mb-2">
+				<span class="text-primary">
+					<i class="fab fa-battle-net" style="color: #2ccbed"></i> <i>Sản phẫm liên quan </i>
+				</span>
+			</div>
+			<div class="row mt-3">
+				@foreach (var item in products)
+				{
+					<div class="col-xl-4 col-lg-4">
+						<div class="single-service-style1 text-center">
+							<div class="single-service-style1__bg" style="background-image: url(assets-template/images/shape/single-service-box-bg-2.png);"></div>
+							<div class="img-holder">
+								<div class="inner">
+									<img src="@item.appImges.FirstOrDefault()?.Path" alt="">
+								</div>
+								<div class="overlay-icon">
+									<a href="#"><span class="icon-water-dispenser"></span></a>
+								</div>
+							</div>
+							<div class="title-holder">
+								<h3>
+									<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id">
+										@{
+											var maxLength = 30;
+											var displayTitle = item.Name;
+											if (item.Name.Length > maxLength)
+											{
+												var truncatedTitle = item.Name.Substring(0, maxLength);
+												var lastSpaceIndex = truncatedTitle.LastIndexOf(' '); // Tìm vị trí khoảng trắng cuối cùng
+
+												displayTitle = truncatedTitle.Substring(0, lastSpaceIndex) + "..";
+											}
+										}
+										@displayTitle
+									</a>
+								</h3>
+								<div class="inner-text">
+									<p>@(item.Summary.Length > 60 ? item.Summary.Substring(0, 60) + "..." : item.Summary)</p>
+								</div>
+								<div class="readmore-button">
+									<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id"><span class="icon-right-arrow"></span>Xem thêm</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		}
+	</div>
+</section>
+
+<div class="d-flex justify-content-center align-items-center">
+	<partial name="_Pager" />
+</div>
+
+

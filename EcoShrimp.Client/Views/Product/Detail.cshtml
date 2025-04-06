@@ -1,0 +1,141 @@
+﻿@using EcoShrimp.Client.ViewModels.Request
+@using EcoShrimp.Data.Entities
+@model EcoShrimp.Data.Entities.AppProducts
+@{
+	var products = TempData["Products"] as List<AppProducts>;
+}
+<style>
+	footer {
+		position: relative; /* Để footer luôn nằm bên dưới nội dung */
+	}
+
+	.project-info-box {
+		display: flex;
+		align-items: stretch; /* Kéo dài các phần tử con có chiều cao bằng nhau */
+	}
+
+	.img-box img {
+		height: 100%; /* Ảnh sẽ kéo dài theo chiều cao của .project-info-box */
+		object-fit: cover; /* Đảm bảo ảnh không bị méo */
+		max-width: 100%; /* Đảm bảo không bị tràn */
+	}
+
+	.text-box {
+		flex: 1; /* Cho phép phần text-box chiếm toàn bộ phần còn lại */
+	}
+
+	.breadcrumb-area {
+		display: flex;
+		align-items: center; /* Đưa nội dung lên cao */
+		justify-content: center;
+		height: 350px; /* Đảm bảo chiều cao không bị thay đổi */
+	}
+	/* ============zoom ảnh======= */ 
+	.img-box {
+		position: relative;
+		overflow: hidden; /* Đảm bảo ảnh không bị tràn ra ngoài */
+	}
+
+
+		.img-box:hover img {
+			transform: scale(1.2); /* Tăng kích thước ảnh khi hover */
+		}
+
+</style>
+<section class="breadcrumb-area" style="height: 270px">
+	<div class="breadcrumb-area-bg" style="background-image: url(/assets-template/images/product-detail/149d5084711t53633l0.jpg); height: 270px"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="inner-content text-center" style="top: -50px">
+					<div class="title">
+						<div style="font-size: 35px; padding: 10px 0; color: white">Chi tiết sản phẫm</div>
+					</div>
+					<div class="breadcrumb-menu">
+						<ul>
+							<li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+							<li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+							<li><a asp-action="Index" asp-controller="Product">Sản phẫm</a></li>
+							<li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+							<li class="active">Chi tiết sản phẫm</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="row" style="position: relative; top: -90px">
+	<div class="col-8 p-0 mx-auto">
+		<div class="row mt-5">
+			<div class="col-xl-4 col-lg-5 order-box-2" >
+				<div class="view-all-service">
+					<div class="sidebar-title pb-3">
+						<h4>Sản phẫm liên quan</h4>
+						<div class="decor">
+							<img src="~/assets-template/images/shape/decor.png" alt="">
+						</div>
+					</div>
+					<ul class="service-pages">
+						@foreach (var item in products)
+						{
+							<div class="d-block">
+								<i class="fas fa-angle-right"></i> <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id" class="p-0 m-0">@item.Name</a>
+							</div>
+						}
+					</ul>
+				</div>
+			</div>
+			<div class="col-xl-8 col-lg-7 " >
+				<div class="project-info-box">
+					<div class="img-box" style="border: 1px solid #004da1;">
+						<img src="@Model.appImges.FirstOrDefault().Path" width="150px"/>
+					</div>
+					<div class="text-box" style="padding: 25px 15px 15px 15px; width: 350px">
+						<div class="sec-title pb-2">
+							<h5 style="color: white">@Model.Name</h5>
+							<div class="decor">
+								<img src="~/assets-template/images/shape/decor.png" alt="">
+							</div>
+						</div>
+						<ul>
+							<li class="mb-1">
+								<h6>Danh mục:</h6>
+								<span>@Model.appCategory.Name</span>
+							</li>
+							<li class="mb-1">
+								<h6>Model:</h6>
+								<span>PRE5000-M International</span>
+							</li>
+						</ul>
+						<div class="header-right_buttom m-0 mt-4">
+							<div class="btns-box p-0">
+								<a class="btn-one" style="padding: 0 15px; cursor: pointer" data-toggle="modal" data-target="#RequestProduct" >
+									<div class="round"></div>
+									<span class="txt" style="font-size: 14px;">Yêu cầu báo giá</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="col-xl-8 col-lg-7 mt-0 mx-auto p-0" style="position: relative; top: -50px">
+	<div class="">
+		<div class="top">
+			<h5>Mô tả:</h5>
+		</div>
+		<div class="">
+			@Html.Raw(Model.Desc)
+		</div>
+
+	</div>
+</div>
+
+
+@await Html.PartialAsync("_Request", new RequestVM())

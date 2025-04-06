@@ -1,0 +1,79 @@
+﻿
+
+<div class="modal fade" id="EndSeason" tabindex="-1" role="dialog" aria-labelledby="EndSeasonLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" style="width: 700px">
+			<form asp-action="EndSeason" asp-controller="ClientSeason" id="EndSeasonForm" method="post">
+				<div class="modal-header">
+					<h4 class="modal-title fs-6" id="EndSeasonLabel">Kết thúc đợt nuôi</h4>
+					<button type="button" class="close" onclick="CloseModalEndSeason()">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="padding-top: 0px">
+					<div class="row">
+						<div class="col-12 d-flex justify-content-end" style="margin-top: 7px">
+							<span style="font-size: 12px;">Hôm nay ngày: @DateTime.Now.ToString("dd/MM/yy")</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<input name="id" id="EndSeasonId" type="hidden" />
+							<div class="py-2">Tên đợt nuôi: <span style="color: red;">*</span></div>
+							<input type="text" readonly id="EndNameSeason" class="form-control" placeholder="Vd: Đông xuân 2025" />
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-12">
+							<div class="alert alert-warning text-center" role="alert">
+								<strong>Lưu ý:</strong> Sau khi kết thúc đợt nuôi, bạn sẽ không thể chỉnh sửa thông tin của đợt này. Và dữ liệu của đợt nuôi này sẽ được lưu trữ lại.
+								<br />
+								Vui lòng kiểm tra kỹ trước khi xác nhận!
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModalEndSeason()">Hủy</button>
+					<button type="submit" class="btn btn-primary">Kết thúc</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function CloseModalEndSeason() {
+		$('#EndSeason').modal('hide');
+	}
+
+	// Hàm để mở modal
+	function EndSeason(id, name) {
+		$('#EndSeasonId').val(id);
+		console.log("Id: " + id);
+		$('#EndNameSeason').val(name);
+		$('#EndSeason').modal('show');
+	}
+
+		// Hàm kiểm tra validate
+	function validateForm(event) {
+		let isValid = true;
+
+		// Lấy giá trị của các trường
+		let name = document.getElementById('Name').value.trim();
+
+		// Kiểm tra trường 'Tên loại'
+		if (name === "") {
+			document.getElementById('NameError').innerText = "Thuộc tính là bắt buột.";
+			isValid = false;
+		} else {
+			document.getElementById('NameError').innerText = "";
+		}
+
+		// Nếu không hợp lệ, ngừng submit form
+		if (!isValid) {
+			event.preventDefault();
+		}
+	}
+
+</script>
+
