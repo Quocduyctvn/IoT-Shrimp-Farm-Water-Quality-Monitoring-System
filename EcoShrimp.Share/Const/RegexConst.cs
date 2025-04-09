@@ -13,6 +13,7 @@
 		public const string EMAIL = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
 		public const string PHONE_NUMBER = @"^\+?\d{10,15}$";
 		public const string INT_REGEX = @"^[0-9]\d*$";
+		public const string FLOAT_REGEX = @"^-?\d+([.,]\d+)?$";
 		public const string PASSWORD = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$";
 	}
 }

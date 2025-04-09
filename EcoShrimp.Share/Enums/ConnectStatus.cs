@@ -8,7 +8,7 @@ namespace EcoShrimp.Share.Enums
 	public enum ConnectStatus
 	{
 		[Display(Name = "Chưa kết nối")]
-		NotConnected = 0,
+		NotConnected = 1,
 
 		[Display(Name = "Kết nối thành công")]
 		Connected = 2,
