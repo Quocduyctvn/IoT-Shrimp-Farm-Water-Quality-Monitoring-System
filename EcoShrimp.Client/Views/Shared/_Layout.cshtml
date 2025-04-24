@@ -1,49 +1,144 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EcoShrimp.Client</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/EcoShrimp.Client.styles.css" asp-append-version="true" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>EcoShrimp - @ViewData["Title"]</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/EcoShrimp.Client.styles.css" asp-append-version="true" />
+
+
+	<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,300;1,400;1,500;1,600;1,700;1,800&amp;display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+	<link rel="stylesheet" href="~/assets-template/css/animate.css">
+	<link rel="stylesheet" href="~/assets-template/css/aos.css">
+	<link rel="stylesheet" href="~/assets-template/css/bootstrap.min.css">
+	<link rel="stylesheet" href="~/assets-template/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="~/assets-template/css/custom-animate.css">
+	<link rel="stylesheet" href="~/assets-template/css/fancybox.min.css">
+	<link rel="stylesheet" href="~/assets-template/css/flaticon.css">
+	<link rel="stylesheet" href="~/assets-template/css/font-awesome.min.css">
+	<link rel="stylesheet" href="~/assets-template/css/imp.css">
+	<link rel="stylesheet" href="~/assets-template/css/jquery-ui.css">
+	<link rel="stylesheet" href="~/assets-template/css/magnific-popup.css">
+	<link rel="stylesheet" href="~/assets-template/css/owl.css">
+	<link rel="stylesheet" href="~/assets-template/css/rtl.css">
+	<link rel="stylesheet" href="~/assets-template/css/scrollbar.css">
+	<link rel="stylesheet" href="~/assets-template/css/icomoon.css">
+	<link rel="stylesheet" href="~/assets-template/css/jquery.bootstrap-touchspin.css">
+	<link rel="stylesheet" href="~/assets-template/css/nice-select.css">
+
+	<!-- Module css -->
+	<link rel="stylesheet" href="~/assets-template/css/module-css/header-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/banner-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/about-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/blog-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/fact-counter-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/faq-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/contact-page.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/breadcrumb-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/team-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/partner-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/testimonial-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/services-section.css">
+	<link rel="stylesheet" href="~/assets-template/css/module-css/footer-section.css">
+
+	<link rel="stylesheet" href="~/assets-template/css/style.css">
+	<link rel="stylesheet" href="~/assets-template/css/responsive.css">
+	<!-- Favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="~/assets/images/logo/logon-cirle.png">
+	<link rel="icon" type="image/png" href="~/assets/images/logo/logon-cirle.png" sizes="40x40">
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EcoShrimp.Client</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+	<div class="boxed_wrapper ltr">
+		<!-- Main header-->
+		@await Component.InvokeAsync("Header")
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - EcoShrimp.Client - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+		<div style="">
+			@RenderBody()
+
+			<partial name="_Noti" />
+		</div>
+
+
+
+		<!--Start footer area -->
+		@await Component.InvokeAsync("Footer")
+		<!--End footer area-->
+
+
+		<button class="scroll-top scroll-to-target" data-target="html">
+			<span class="icon-right-arrow-1"></span>
+		</button>
+
+
+
+
+		<!-- search-popup -->
+		<div id="search-popup" class="search-popup">
+			<div class="close-search"><i class="icon-close"></i></div>
+			<div class="popup-inner">
+				<div class="overlay-layer"></div>
+				<div class="search-form">
+					<form method="post" asp-action="Index">
+						<div class="form-group">
+							<fieldset>
+								<input type="search" name="keyword" class="form-control" name="search-input" value="" placeholder="Hôm nay bạn tìm gì !!" required>
+								<input type="submit" value="Tìm kiếm ngay!" class="theme-btn style-four">
+							</fieldset>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- search-popup end -->
+
+
+	</div>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+
+
+	<script src="~/assets-template/js/jquery.js"></script>
+	<script src="~/assets-template/js/aos.js"></script>
+	<script src="~/assets-template/js/appear.js"></script>
+	<script src="~/assets-template/js/bootstrap.bundle.min.js"></script>
+	<script src="~/assets-template/js/bootstrap-select.min.js"></script>
+	<script src="~/assets-template/js/isotope.js"></script>
+	<script src="~/assets-template/js/jquery.countTo.js"></script>
+	<script src="~/assets-template/js/jquery.easing.min.js"></script>
+	<script src="~/assets-template/js/jquery.enllax.min.js"></script>
+	<script src="~/assets-template/js/jquery.fancybox.js"></script>
+	<script src="~/assets-template/js/jquery.magnific-popup.min.js"></script>
+	<script src="~/assets-template/js/jquery.paroller.min.js"></script>
+	<script src="~/assets-template/js/jquery-ui.js"></script>
+	<script src="~/assets-template/js/knob.js"></script>
+	<script src="~/assets-template/js/map-script.js"></script>
+	<script src="~/assets-template/js/owl.js"></script>
+	<script src="~/assets-template/js/pagenav.js"></script>
+	<script src="~/assets-template/js/parallax.min.js"></script>
+	<script src="~/assets-template/js/scrollbar.js"></script>
+	<script src="~/assets-template/js/TweenMax.min.js"></script>
+	<script src="~/assets-template/js/validation.js"></script>
+	<script src="~/assets-template/js/wow.js"></script>
+
+	<script src="~/assets-template/js/jquery.bootstrap-touchspin.js"></script>
+	<script src="~/assets-template/js/jquery.nice-select.min.js"></script>
+	<script src="~/assets-template/js/tilt.jquery.js"></script>
+
+
+	<script async defer
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATY4Rxc8jNvDpsK8ZetC7JyN4PFVYGCGM&amp;callback=initMap">
+	</script>
+	<!-- thm custom script -->
+	<script src="~/assets-template/js/custom.js"></script>
+
 </body>
 </html>
