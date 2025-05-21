@@ -1,0 +1,171 @@
+﻿<style>
+    /* Định dạng chung cho các Toast thông báo */
+    .toast {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: bold;
+        position: fixed;
+        bottom: 50px;
+        right: 20px;
+        width: 350px;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		z-index: 9999;
+    }
+
+        /* Các màu sắc cho từng loại thông báo */
+        .toast.success {
+            background-color: #28a745; /* Màu xanh cho Success */
+        }
+
+        .toast.error {
+            background-color: #dc3545; /* Màu đỏ cho Error */
+        }
+
+        .toast.info {
+            background-color: #17a2b8; /* Màu xanh dương cho Info */
+        }
+
+        .toast.warning {
+            background-color: #ffc107; /* Màu vàng cho Warning */
+        }
+
+        /* Thanh tiến trình trong Toast */
+        .toast .progress-bar {
+            height: 5px;
+            background-color: #fff;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        /* Hiển thị Toast khi nó đã sẵn sàng */
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* Định dạng nút đóng */
+        .toast .close {
+            cursor: pointer;
+            font-size: 30px;
+            padding-left: 20px;
+            margin-left: 20px;
+        }
+</style>
+
+
+<script>
+    const beepSound = new Audio('/audio/audio-bip.mp3');  // Đảm bảo đường dẫn đúng đến tệp âm thanh
+
+    // Web Audio API (AudioContext) để phát âm thanh tự động khi Toast xuất hiện
+    var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Function để tạo và hiển thị Toast thông báo
+    function showToast(message, type) {
+        var toast = document.createElement('div');
+        toast.classList.add('toast', type, 'show'); // Thêm lớp theo kiểu thông báo (success, error, info, warning)
+
+        // Tạo icon và thêm vào Toast
+        var icon = document.createElement('span');
+        icon.classList.add('icon');
+
+        switch(type) {
+            case 'success':
+                icon.innerHTML = '✔ '; // Icon thành công
+                break;
+            case 'error':
+                icon.innerHTML = '⚠ '; // Icon lỗi
+                break;
+            case 'info':
+                icon.innerHTML = 'ℹ '; // Icon thông tin
+                break;
+            case 'warning':
+                icon.innerHTML = '⚠ '; // Icon cảnh báo
+                break;
+            default:
+                icon.innerHTML = '✔ ';
+        }
+
+        // Thêm icon và nội dung vào Toast
+        toast.appendChild(icon);
+        toast.innerHTML += message;
+
+        // Tạo thanh tiến trình
+        var progressBar = document.createElement('div');
+        progressBar.classList.add('progress-bar');
+        toast.appendChild(progressBar);
+
+        // Thêm nút đóng
+        var closeBtn = document.createElement('div');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.classList.add('close');
+        closeBtn.onclick = function() {
+            toast.classList.remove('show'); // Ẩn thông báo khi đóng
+            setTimeout(function() {
+                toast.remove(); // Xóa Toast khỏi DOM
+            }, 500);
+        };
+        toast.appendChild(closeBtn);
+
+        // Thêm Toast vào body
+        document.body.appendChild(toast);
+
+        // Phát âm thanh tự động khi Toast được hiển thị
+        beepSound.play().catch(function(error) {
+            console.log("Không thể phát âm thanh: ", error);
+        });
+
+        // Cập nhật thanh tiến trình
+        var progress = 0;
+        var interval = setInterval(function() {
+            progress += 1;
+            progressBar.style.width = progress + '%'; // Cập nhật thanh tiến trình
+
+            // Khi thanh tiến trình đầy, ẩn Toast
+            if (progress >= 100) {
+                clearInterval(interval);
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                    setTimeout(function() {
+                        toast.remove();
+                    }, 500);
+                }, 500);
+            }
+        }, 90); // Cập nhật mỗi 90ms (để hoàn thành trong 15s)
+
+        // Ẩn Toast sau 15 giây
+        setTimeout(function() {
+            if (progress < 100) {
+                clearInterval(interval);
+                progressBar.style.width = '100%';
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                    toast.remove();
+                }, 500);
+            }
+        }, 15000); // 15 giây
+    }
+
+    // Kiểm tra TempData và hiển thị Toast
+    var errMsg = '@TempData["Err"]';
+    var successMsg = '@TempData["Success"]';
+    var wrnMsg = '@TempData["Wrn"]';
+
+    if (errMsg) {
+        showToast(errMsg, 'error'); // Hiển thị thông báo lỗi
+    }
+    if (successMsg) {
+        showToast(successMsg, 'success'); // Hiển thị thông báo thành công
+    }
+    if (wrnMsg) {
+        showToast(wrnMsg, 'warning'); // Hiển thị thông báo cảnh báo
+    }
+</script>
